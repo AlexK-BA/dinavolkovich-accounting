@@ -10,8 +10,8 @@ const Header = () => {
   const { lang, setLang, t } = useI18n();
 
   const clientLinks = [
-    { label: "Efektywne Biuro Rachunkowe", href: "https://efektywnebiurorachunkowe.pl/" },
-    { label: "wFirma", href: "https://wfirma.pl/" },
+    { label: "Efektywne Biuro Rachunkowe", href: "https://panel.finbizcentrum.pl/" },
+    { label: "wFirma", href: "https://wfirma.pl/logowanie" },
   ];
 
   const navLinks = [
