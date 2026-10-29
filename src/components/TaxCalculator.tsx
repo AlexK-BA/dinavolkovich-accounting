@@ -85,11 +85,11 @@ const TaxCalculator = () => {
           <div className="grid md:grid-cols-2 gap-6">
             {(["ryczalt", "ogolne"] as const).map((regime) => {
               const data = results[regime];
-              const isBetter = betterRegime === regime;
+              const isBetter = false;
               return (
                 <div key={regime} className={`rounded-xl border p-6 ${isBetter ? "border-accent bg-background" : "border-border bg-background"}`}>
                   <div className="flex items-center justify-between mb-1">
-                    <h3 className="text-lg font-semibold text-foreground">{t(`calc.${regime}`)}</h3>
+                    <h3 className="text-lg font-semibold text-foreground">{regime === "ryczalt" ? `Ryczałt ${ryczaltRate * 100}%` : "Skala podatkowa"}</h3>
                     {isBetter && <span className="text-xs font-semibold bg-accent text-accent-foreground px-2 py-0.5 rounded-full">{t("calc.better")}</span>}
                   </div>
                   <p className="text-xs text-muted-foreground mb-4">{t(`calc.${regime}.desc`)}</p>
