@@ -11,9 +11,11 @@ function fmt(n: number) {
 
 const TaxCalculator = () => {
   const [monthlyIncome, setMonthlyIncome] = useState(6000);
+  const [ryczaltRate, setRyczaltRate] = useState(0.12);
+  const [monthlyCosts, setMonthlyCosts] = useState(0);
   const { t } = useI18n();
 
-  const results = useMemo(() => calculateAnnual(monthlyIncome), [monthlyIncome]);
+  const results = useMemo(() => calculateAnnual(monthlyIncome, ryczaltRate, monthlyCosts * 12), [monthlyIncome, ryczaltRate, monthlyCosts]);
   const betterRegime = results.ryczalt.annualNet > results.ogolne.annualNet ? "ryczalt" : "ogolne";
   const savings = Math.abs(results.ryczalt.annualNet - results.ogolne.annualNet);
   const betterData = betterRegime === "ryczalt" ? results.ryczalt : results.ogolne;
@@ -53,19 +55,23 @@ const TaxCalculator = () => {
             />
             <div className="flex justify-between text-xs text-muted-foreground mt-2">
               <span>2 000 zł</span>
-              <span>{t("calc.annual")}: {fmt(monthlyIncome * 11)} zł</span>
+              <span>{t("calc.annual")}: {fmt(monthlyIncome * 12)} zł</span>
               <span>30 000 zł</span>
             </div>
           </div>
 
-          {/* Recommendation */}
+          <div className="bg-background rounded-xl border border-border p-6 mb-6 grid sm:grid-cols-2 gap-5">
+            <div><label htmlFor="ryczalt-rate" className="text-sm font-semibold block mb-2">Stawka ryczałtu (do weryfikacji)</label><select id="ryczalt-rate" value={ryczaltRate} onChange={e => setRyczaltRate(Number(e.target.value))} className="w-full rounded-md border border-border bg-card p-3 text-sm">{[0.02,0.03,0.055,0.085,0.10,0.12,0.125,0.14,0.15,0.17].map(rate => <option key={rate} value={rate}>{rate * 100}%</option>)}</select></div>
+            <div><label htmlFor="monthly-costs" className="text-sm font-semibold block mb-2">Koszty miesięczne (zł)</label><input id="monthly-costs" type="number" min="0" value={monthlyCosts} onChange={e => setMonthlyCosts(Math.max(0,Number(e.target.value)))} className="w-full rounded-md border border-border bg-card p-3 text-sm" /></div>
+          </div>
+          {/* Illustrative comparison; no personalized recommendation */}
           <div className="bg-primary rounded-xl p-6 mb-8 text-primary-foreground">
             <div className="flex items-center justify-between flex-wrap gap-4">
               <div className="flex items-center gap-3">
                 <TrendingUp className="w-6 h-6 text-accent" />
                 <div>
-                  <p className="font-semibold">{t("calc.recommendation")}: {betterRegime === "ryczalt" ? t("calc.ryczalt") : t("calc.ogolne")}</p>
-                  <p className="text-sm opacity-80">{t("calc.savings")} {fmt(savings)} zł</p>
+                  <p className="font-semibold">Porównanie orientacyjne: {betterRegime === "ryczalt" ? "ryczałt" : "skala podatkowa"}</p>
+                  <p className="text-sm opacity-80">Różnica w uproszczonym modelu: {fmt(savings)} zł</p>
                 </div>
               </div>
               <div className="text-right">
@@ -101,7 +107,7 @@ const TaxCalculator = () => {
             })}
           </div>
 
-          <p className="text-xs text-muted-foreground mt-6 text-center">{t("calc.disclaimer")}</p>
+          <p className="text-xs text-muted-foreground mt-6 text-center">Symulacja orientacyjna, nie stanowi porady podatkowej. Składki ZUS i zdrowotne oraz odliczenia są uproszczone; wyniki wymagają weryfikacji przez księgowego. Przed wyborem formy opodatkowania skontaktuj się z biurem.</p>
         </motion.div>
       </div>
     </section>
