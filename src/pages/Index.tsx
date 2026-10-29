@@ -9,6 +9,7 @@ import TaxCalculator from "@/components/TaxCalculator";
 import FAQ from "@/components/FAQ";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
+import PartnerServices from "@/components/PartnerServices";
 
 const Index = () => {
   return (
@@ -23,6 +24,7 @@ const Index = () => {
       <Founder />
       <FAQ />
       <Contact />
+      <PartnerServices />
       <Footer />
     </div>
   );
