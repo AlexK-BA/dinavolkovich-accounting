@@ -30,7 +30,7 @@ export function calculateAnnual(monthlyIncome: number, ryczaltRate = DEFAULT_RYC
   const rZus = ZUS_PREF;
   const rHealth = HEALTH_RYCZALT_BASE;
   const rTotal = rTax + rZus + rHealth;
-  const rNet = monthlyIncome - rTotal;
+  const rNet = monthlyIncome - Math.max(0, annualCosts) / months - rTotal;
 
   // Ogólne 12%
   const oTaxableAnnual = Math.max(0, annualIncome - Math.max(0, annualCosts) - PIT_FREE);
