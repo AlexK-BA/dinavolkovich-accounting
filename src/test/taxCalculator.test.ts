@@ -66,3 +66,21 @@ describe("independent numerical reference scenarios",()=>{
    }
  });
 });
+
+describe("start month boundaries",()=>{
+ it("February start excludes January minimum",()=>{
+  const r=calculateTax2026({...base,startMonth:2,months:1,zusMode:"start",monthlyRevenue:0,monthlyCosts:0});
+  expect(r[0].health).toBe(432.54);
+  expect(r[0].annualRevenue).toBe(0);
+ });
+ it("January start uses January minimum",()=>{
+  const r=calculateTax2026({...base,startMonth:1,months:1,zusMode:"start",monthlyRevenue:0,monthlyCosts:0});
+  expect(r[0].health).toBe(314.96);
+ });
+ it("December caps annualised months to one",()=>{
+  const r=calculateTax2026({...base,startMonth:12,months:12,zusMode:"start"});
+  expect(r[0].annualRevenue).toBe(10000);
+  expect(r[0].annualCosts).toBe(2000);
+  expect(r[0].health).toBe(720);
+ });
+});
