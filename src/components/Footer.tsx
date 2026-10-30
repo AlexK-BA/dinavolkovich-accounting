@@ -1,5 +1,6 @@
 const logo = "/finbiz-logo-dark.svg";
 import { useI18n } from "@/lib/i18n";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   const { t } = useI18n();
@@ -27,6 +28,12 @@ const Footer = () => {
               <p>KRS: 0001224296</p>
               <p>NIP: 5253079744</p>
               <p>REGON: 54401217000000</p>
+              <a href="mailto:grossbuh23@gmail.com" className="block hover:opacity-100">grossbuh23@gmail.com</a>
+              <nav aria-label="Dokumenty prawne" className="flex flex-col gap-2 pt-4">
+                <Link to="/polityka-prywatnosci" className="underline hover:opacity-100">Polityka prywatności (RODO)</Link>
+                <Link to="/polityka-cookies" className="underline hover:opacity-100">Polityka cookies</Link>
+                <Link to="/regulamin" className="underline hover:opacity-100">Regulamin strony i kalkulatora</Link>
+              </nav>
             </div>
           </div>
         </div>
