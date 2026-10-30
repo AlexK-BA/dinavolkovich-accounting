@@ -41,14 +41,15 @@ export function calculateTax2026(input:TaxInputs): TaxResult[] {
  const costs=MAX(input.monthlyCosts)*activeMonths;
  const zus=SOCIAL[input.zusMode] || SOCIAL.full;
  const social=round((zus.base+(input.chorobowe?zus.sickness:0))*activeMonths);
- // Full ZUS includes FP/FS (138.47 PLN in the model); this is a business cost,
+ // Full ZUS includes FP/FS (138.47 PLN in 2026); this is a business cost,
  // not a social-insurance contribution deductible from the ryczalt revenue base.
- const fpfs=round((input.zusMode==="full"?127.49:0)*activeMonths);
+ const fpfs=round((input.zusMode==="full"?138.47:0)*activeMonths);
  const deductibleSocial=round(social-fpfs);
  const profit=MAX(revenue-costs-social);
  const additional=MAX(input.additionalDeduction);
- const healthSkala=round(Math.max((HEALTH_MIN*activeMonths-(startMonth===1?HEALTH_MIN-JANUARY_HEALTH_MIN:0)),profit*0.09));
- const healthLiniowy=round(Math.max((HEALTH_MIN*activeMonths-(startMonth===1?HEALTH_MIN-JANUARY_HEALTH_MIN:0)),profit*0.049));
+ const monthlyProfit=profit/activeMonths;
+ const healthSkala=round(Array.from({length:activeMonths},(_,i)=>Math.max(startMonth+i===1?JANUARY_HEALTH_MIN:HEALTH_MIN,monthlyProfit*0.09)).reduce((a,b)=>a+b,0));
+ const healthLiniowy=round(Array.from({length:activeMonths},(_,i)=>Math.max(startMonth+i===1?JANUARY_HEALTH_MIN:HEALTH_MIN,monthlyProfit*0.049)).reduce((a,b)=>a+b,0));
  const ryczaltThresholdRevenue=MAX(revenue-deductibleSocial);
  const healthBand=ryczaltThresholdRevenue<=60000?RYCZALT_HEALTH.low:ryczaltThresholdRevenue<=300000?RYCZALT_HEALTH.mid:RYCZALT_HEALTH.high;
  const healthRyczalt=round(healthBand*activeMonths);
