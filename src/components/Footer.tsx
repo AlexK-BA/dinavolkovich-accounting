@@ -8,7 +8,7 @@ const Footer = () => {
       <div className="max-w-7xl mx-auto">
         <div className="grid md:grid-cols-3 gap-8 mb-10">
           <div>
-            <img src={logo} alt="FinBiz Centrum" className="block w-[220px] max-w-full h-auto object-contain mb-5 rounded-sm bg-[#faf7f1] p-2" />
+            <img src={logo} alt="FinBiz Centrum" className="block w-[220px] max-w-full h-auto object-contain brightness-0 invert mb-5" />
             <p className="text-sm opacity-60 leading-relaxed">{t("footer.desc")}</p>
           </div>
           <div>
