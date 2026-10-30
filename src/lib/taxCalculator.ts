@@ -30,7 +30,7 @@ const SOCIAL = {
 } as const;
 const RYCZALT_HEALTH = {low:498.35,mid:830.58,high:1495.04};
 const JANUARY_HEALTH_MIN = 314.96;
-const HEALTH_MIN = 432.54; // minimum monthly health contribution February–December 2026\nconst JANUARY_HEALTH_MIN = 314.96; // January 2026 (previous contribution year)
+const HEALTH_MIN = 432.54; // minimum monthly health contribution February–December 2026
 const LINEAR_HEALTH_DEDUCTION_LIMIT = 14100;
 export function calculateTax2026(input:TaxInputs): TaxResult[] {
  const months=Math.min(12,Math.max(1,Math.round(MAX(input.months)||12)));
