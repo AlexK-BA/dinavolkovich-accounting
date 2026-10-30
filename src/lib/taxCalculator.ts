@@ -27,7 +27,7 @@ const round = (x:number) => Math.round(x*100)/100;
 const SOCIAL = {
  start: {base:0, sickness:0},
  preferential:{base:420.86,sickness:35.32},
- full:{base:1788.29,sickness:138.47}
+ full:{base:1660.80,sickness:138.47}
 } as const;
 const RYCZALT_HEALTH = {low:498.35,mid:830.58,high:1495.04};
 const JANUARY_HEALTH_MIN = 314.96;
@@ -43,7 +43,7 @@ export function calculateTax2026(input:TaxInputs): TaxResult[] {
  const social=round((zus.base+(input.chorobowe?zus.sickness:0))*activeMonths);
  // Full ZUS includes FP/FS (138.47 PLN in the model); this is a business cost,
  // not a social-insurance contribution deductible from the ryczalt revenue base.
- const fpfs=round((input.zusMode==="full"?138.47:0)*activeMonths);
+ const fpfs=round((input.zusMode==="full"?127.49:0)*activeMonths);
  const deductibleSocial=round(social-fpfs);
  const profit=MAX(revenue-costs-social);
  const additional=MAX(input.additionalDeduction);
