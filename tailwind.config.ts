@@ -14,8 +14,8 @@ export default {
     },
     extend: {
       fontFamily: {
-        heading: ["Cormorant", "serif"],
-        body: ["Manrope", "sans-serif"],
+        heading: ["Georgia", "Times New Roman", "serif"],
+        body: ["Arial", "Helvetica", "sans-serif"],
       },
       colors: {
         border: "hsl(var(--border))",
