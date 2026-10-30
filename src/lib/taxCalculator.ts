@@ -27,7 +27,7 @@ const round = (x:number) => Math.round(x*100)/100;
 const SOCIAL = {
  start: {base:0, sickness:0},
  preferential:{base:420.86,sickness:35.32},
- full:{base:1788.29,sickness:138.47}
+ full:{base:1649.82,sickness:138.47}
 } as const;
 const RYCZALT_HEALTH = {low:498.35,mid:830.58,high:1495.04};
 const JANUARY_HEALTH_MIN = 314.96;
