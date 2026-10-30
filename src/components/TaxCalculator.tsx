@@ -38,9 +38,9 @@ export default function TaxCalculator(){
   <p className="text-muted-foreground mb-5">{ui.intro}</p>
   <div role="note" className="border-2 border-primary/40 rounded-xl p-5 mb-7 bg-background">
    <strong className="block mb-2">{ui.warning}</strong>
-   <p className="text-sm leading-relaxed">Wyniki są przybliżonymi szacunkami na podstawie podanych danych, publicznie dostępnych informacji i uproszczonych założeń. Nie obejmują wszystkich ulg, wyjątków, zasad ZUS ani indywidualnych okoliczności. Nie są poradą podatkową, rekomendacją ani gwarancją oszczędności. Ostateczne rozliczenie oraz wybór formy opodatkowania powinien zweryfikować profesjonalny księgowy. <a href="#contact" className="underline text-primary">Zapytaj FINBIZ CENTRUM</a>.</p>
+   <p className="text-sm leading-relaxed">{ui.warningBody} <a href="#contact" className="underline text-primary">{ui.contact}</a>.</p>
   </div>
-  <div className="flex gap-2 mb-6" role="group" aria-label="Tryb kalkulatora">
+  <div className="flex gap-2 mb-6" role="group" aria-label={ui.heading}>
    <button type="button" aria-pressed={!detailed} onClick={()=>setDetailed(false)} className={`rounded-md px-5 py-2 border ${!detailed?"bg-primary text-primary-foreground":"bg-background"}`}>{ui.simple}</button>
    <button type="button" aria-pressed={detailed} onClick={()=>setDetailed(true)} className={`rounded-md px-5 py-2 border ${detailed?"bg-primary text-primary-foreground":"bg-background"}`}>{ui.detailed}</button>
   </div>
@@ -48,18 +48,18 @@ export default function TaxCalculator(){
    {numberField(ui.revenue,revenue,setRevenue)}
    {numberField(ui.costs,costs,setCosts)}
    <label className="block text-sm font-semibold">{ui.rate}<select className="mt-2 w-full rounded-md border border-border bg-background p-3" value={rate} onChange={e=>setRate(Number(e.target.value))}>{rates.map(r=><option key={r} value={r}>{(r*100).toLocaleString("pl-PL")}%</option>)}</select></label>
-   <label className="block text-sm font-semibold">{ui.zus}<select className="mt-2 w-full rounded-md border border-border bg-background p-3" value={zusMode} onChange={e=>setZusMode(e.target.value as ZusMode)}><option value="full">Pełny ZUS</option><option value="preferential">Preferencyjny ZUS</option><option value="start">Ulga na start</option></select></label>
+   <label className="block text-sm font-semibold">{ui.zus}<select className="mt-2 w-full rounded-md border border-border bg-background p-3" value={zusMode} onChange={e=>setZusMode(e.target.value as ZusMode)}><option value="full">{zusLabels[lang].full}</option><option value="preferential">{zusLabels[lang].preferential}</option><option value="start">{zusLabels[lang].start}</option></select></label>
    {detailed&&<><label className="flex items-center gap-3 text-sm"><input type="checkbox" checked={chorobowe} onChange={e=>setChorobowe(e.target.checked)}/>{ui.sickness}</label>{numberField(ui.start,startMonth,n=>setStartMonth(Math.min(12,Math.max(1,n))),12)}{numberField(ui.months,months,n=>setMonths(Math.min(12,Math.max(1,n))),12)}{numberField(ui.deduction,deduction,setDeduction)}</>}
   </div>
   <div className="mb-5"><button type="button" onClick={printPdf} className="rounded-md bg-primary text-primary-foreground px-5 py-3 font-semibold hover:opacity-90" aria-label={pdf.button}>{pdf.button}</button></div>
   <div className="grid md:grid-cols-3 gap-5">{result.map(r=><article key={r.regime} className="rounded-xl border border-border bg-background p-5">
    <h3 className="text-xl font-semibold mb-3">{ui.regimes[regimeOrder.indexOf(r.regime)]}</h3>
    <p className="text-xs text-muted-foreground mb-2">{ui.net}</p><p className="text-2xl font-bold text-primary mb-5">{money(r.net)}</p>
-   <dl className="text-sm space-y-3">{[["Przychód",r.annualRevenue],["Koszty",r.annualCosts],["ZUS społeczny",r.social],["Składka zdrowotna",r.health],["Podatek PIT",r.pit],["Średnio na miesiąc",r.monthlyNet]].map(([k,v])=><div key={String(k)} className="flex justify-between gap-2"><dt className="text-muted-foreground">{k}</dt><dd className="font-medium text-right">{money(Number(v))}</dd></div>)}</dl>
+   <dl className="text-sm space-y-3">{[[ui.annualRevenue,r.annualRevenue],[ui.annualCosts,r.annualCosts],[ui.social,r.social],[ui.health,r.health],[ui.pit,r.pit],[ui.monthly,r.monthlyNet]].map(([k,v])=><div key={String(k)} className="flex justify-between gap-2"><dt className="text-muted-foreground">{k}</dt><dd className="font-medium text-right">{money(Number(v))}</dd></div>)}</dl>
   </article>)}</div>
-  <p className="text-xs text-muted-foreground mt-6">Model szacunkowy 2026. Nie uwzględnia m.in. Małego ZUS Plus, wakacji składkowych, pełnej listy ulg, innych źródeł dochodu, indywidualnych zasad rozliczenia składki zdrowotnej i wszystkich wyjątków. W przypadku takich sytuacji wymagane jest indywidualne wyliczenie. <a href="/regulamin" className="underline">Regulamin kalkulatora</a>.</p>
+  <p className="text-xs text-muted-foreground mt-6">{ui.disclaimer} <a href="/regulamin" className="underline">{ui.terms}</a>.</p>
  </div>
- <div id="tax-print-report" className="tax-print-report" aria-hidden="true">
+ <div id="tax-print-report" className="tax-print-report">
   <header className="tax-print-header"><img src="/finbiz-logo.svg" alt="FINBIZ CENTRUM"/><div><h1>{pdf.title}</h1><p>{pdf.subtitle}</p></div></header>
   <p className="tax-print-date">{pdf.generated}: {new Intl.DateTimeFormat(lang==="pl"?"pl-PL":lang==="ru"?"ru-RU":"en-GB",{dateStyle:"long"}).format(new Date())}</p>
   <div className="tax-print-inputs">
