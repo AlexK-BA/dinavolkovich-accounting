@@ -40,7 +40,11 @@ export function calculateTax2026(input:TaxInputs): TaxResult[] {
  const revenue=MAX(input.monthlyRevenue)*activeMonths;
  const costs=MAX(input.monthlyCosts)*activeMonths;
  const zus=SOCIAL[input.zusMode] || SOCIAL.full;
- const social=round((zus.base+(input.chorobowe?zus.sickness:0))*activeMonths);
+ // The six-month start-up relief cannot safely be projected beyond six months.
+ // For longer scenarios, the remaining months use preferential contributions.
+ const startReliefMonths=input.zusMode==="start"?Math.min(activeMonths,6):0;
+ const preferentialAfterStart=input.zusMode==="start"?activeMonths-startReliefMonths:0;
+ const social=round((zus.base+(input.chorobowe?zus.sickness:0))*activeMonths+(SOCIAL.preferential.base+(input.chorobowe?SOCIAL.preferential.sickness:0))*preferentialAfterStart);
  // Full ZUS includes FP/FS (138.47 PLN in 2026); this is a business cost,
  // not a social-insurance contribution deductible from the ryczalt revenue base.
  const fpfs=round((input.zusMode==="full"?138.47:0)*activeMonths);
@@ -60,7 +64,7 @@ export function calculateTax2026(input:TaxInputs): TaxResult[] {
  const rate=Math.min(0.17,Math.max(0,Number.isFinite(input.ryczaltRate)?input.ryczaltRate:0.12));
  const ryczaltBase=MAX(revenue-deductibleSocial-healthRyczalt*0.5-additional);
  const pitRyczalt=round(ryczaltBase*rate);
- const shared=["Model zakłada kolejne miesiące od wskazanego miesiąca 2026 r. i równomierne przychody i koszty.","Nie uwzględnia wszystkich ulg, ograniczeń, rozliczeń rocznych i zmian podstaw składek.","Kwoty składek i progów według danych na 2026 r.; wymagają indywidualnej weryfikacji."];
+ const shared=["Ulga na start w modelu trwa maksymalnie sześć miesięcy; później przyjęto składki preferencyjne. Rzeczywiste okresy ulg zależą od daty rozpoczęcia i uprawnień.","Model zakłada kolejne miesiące od wskazanego miesiąca 2026 r. i równomierne przychody i koszty.","Nie uwzględnia wszystkich ulg, ograniczeń, rozliczeń rocznych i zmian podstaw składek.","Kwoty składek i progów według danych na 2026 r.; wymagają indywidualnej weryfikacji."];
  return ([
   {regime:"skala",health:healthSkala,pit:pitSkala},
   {regime:"liniowy",health:healthLiniowy,pit:pitLiniowy},
