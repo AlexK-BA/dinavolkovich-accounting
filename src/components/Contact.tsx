@@ -1,15 +1,17 @@
-import { useState } from "react";
+
 import { motion } from "framer-motion";
 import { Mail, Phone, MapPin, Clock, Send } from "lucide-react";
 import { useI18n } from "@/lib/i18n";
 
 const Contact = () => {
-  const [submitted, setSubmitted] = useState(false);
   const { t } = useI18n();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
+    const data = new FormData(e.currentTarget);
+    const subject = encodeURIComponent("Zapytanie FINBIZ CENTRUM — " + String(data.get("type") || ""));
+    const body = encodeURIComponent(["Imię: " + String(data.get("name") || ""), "Telefon: " + String(data.get("phone") || ""), "Email: " + String(data.get("email") || ""), "Rodzaj: " + String(data.get("type") || ""), "", String(data.get("message") || "")].join("\n"));
+    window.location.href = `mailto:grossbuh23@gmail.com?subject=${subject}&body=${body}`;
   };
 
   return (
@@ -22,25 +24,25 @@ const Contact = () => {
         </div>
         <div className="grid lg:grid-cols-2 gap-12">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }}>
-            {!submitted ? (
+            {(
               <form onSubmit={handleSubmit} className="space-y-5">
                 <div className="grid sm:grid-cols-2 gap-5">
                   <div>
                     <label className="text-sm font-medium text-foreground mb-1.5 block">{t("contact.name")}</label>
-                    <input type="text" required className="w-full px-4 py-3 rounded-md border border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" placeholder={t("contact.name.ph")} />
+                    <input name="name" type="text" required className="w-full px-4 py-3 rounded-md border border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" placeholder={t("contact.name.ph")} />
                   </div>
                   <div>
                     <label className="text-sm font-medium text-foreground mb-1.5 block">{t("contact.phone")}</label>
-                    <input type="tel" required className="w-full px-4 py-3 rounded-md border border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" placeholder="+48..." />
+                    <input name="phone" type="tel" required className="w-full px-4 py-3 rounded-md border border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" placeholder="+48..." />
                   </div>
                 </div>
                 <div>
                   <label className="text-sm font-medium text-foreground mb-1.5 block">{t("contact.email")}</label>
-                  <input type="email" className="w-full px-4 py-3 rounded-md border border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" placeholder="email@example.com" />
+                  <input name="email" type="email" className="w-full px-4 py-3 rounded-md border border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" placeholder="email@example.com" />
                 </div>
                 <div>
                   <label className="text-sm font-medium text-foreground mb-1.5 block">{t("contact.type")}</label>
-                  <select className="w-full px-4 py-3 rounded-md border border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30">
+                  <select name="type" className="w-full px-4 py-3 rounded-md border border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30">
                     <option>{t("contact.type.jdg")}</option>
                     <option>{t("contact.type.sp")}</option>
                     <option>{t("contact.type.plan")}</option>
@@ -49,23 +51,13 @@ const Contact = () => {
                 </div>
                 <div>
                   <label className="text-sm font-medium text-foreground mb-1.5 block">{t("contact.message")}</label>
-                  <textarea rows={4} className="w-full px-4 py-3 rounded-md border border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 resize-none" placeholder={t("contact.message.ph")} />
+                  <textarea name="message" rows={4} className="w-full px-4 py-3 rounded-md border border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 resize-none" placeholder={t("contact.message.ph")} />
                 </div>
                 <button type="submit" className="w-full bg-primary text-primary-foreground py-3.5 rounded-md text-sm font-semibold hover:bg-primary/90 transition-colors flex items-center justify-center gap-2">
                   <Send className="w-4 h-4" />
                   {t("contact.submit")}
                 </button>
               </form>
-            ) : (
-              <div className="flex items-center justify-center h-full">
-                <div className="text-center py-16">
-                  <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
-                    <Send className="w-7 h-7 text-primary" />
-                  </div>
-                  <h3 className="text-xl font-semibold text-foreground mb-2">{t("contact.sent.title")}</h3>
-                  <p className="text-muted-foreground text-sm">{t("contact.sent.desc")}</p>
-                </div>
-              </div>
             )}
           </motion.div>
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.1 }} className="space-y-8">
@@ -87,7 +79,7 @@ const Contact = () => {
               <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0"><Mail className="w-5 h-5 text-primary" /></div>
               <div>
                 <h4 className="font-semibold text-foreground text-sm">{t("contact.email")}</h4>
-                <a href="mailto:FINBIZ.OFFICE@GMAIL.COM" className="text-sm text-muted-foreground mt-1 block hover:text-primary transition-colors">finbiz.office@gmail.com</a>
+                <a href="mailto:grossbuh23@gmail.com" className="text-sm text-muted-foreground mt-1 block hover:text-primary transition-colors">grossbuh23@gmail.com</a>
               </div>
             </div>
             <div className="flex gap-4">

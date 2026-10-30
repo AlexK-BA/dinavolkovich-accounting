@@ -4,7 +4,7 @@ const partners = [
   {
     name: "wFirma",
     href: "https://wfirma.pl/logowanie",
-    logo: "/wfirma-wordmark.svg",
+    logo: "",
     caption: { pl: "System księgowy", ru: "Бухгалтерская система", en: "Accounting platform" },
     logoClass: "h-12 max-w-[220px]",
     dark: false,
@@ -36,7 +36,7 @@ const PartnerServices = () => {
               aria-label={partner.name}
               className={`rounded-xl border border-border px-6 py-5 min-h-32 flex flex-col items-center justify-center gap-3 hover:border-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary transition-colors ${partner.dark ? "bg-[#121820]" : "bg-white"}`}
             >
-              <img src={partner.logo} alt={partner.name} loading="lazy" className={`w-auto object-contain ${partner.logoClass}`} />
+              {partner.logo ? <img src={partner.logo} alt={partner.name} loading="lazy" className={`w-auto object-contain ${partner.logoClass}`} /> : <span className="text-4xl font-bold tracking-tight text-[#1875B9]" aria-label="wFirma">wFirma</span>}
               <span className={`text-xs ${partner.dark ? "text-white/75" : "text-slate-600"}`}>{partner.caption[lang]}</span>
             </a>
           ))}
