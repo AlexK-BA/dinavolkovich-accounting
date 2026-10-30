@@ -21,10 +21,10 @@ const Footer = () => {
           </div>
           <div>
             <h4 className="font-semibold text-sm mb-3">{legal}</h4>
-            <p className="text-sm opacity-75">FINBIZ CENTRUM SP. Z O.O.</p>
+            <p className="text-sm opacity-75">FINBIZ CENTRUM SPÓŁKA Z OGRANICZONĄ ODPOWIEDZIALNOŚCIĄ</p>
             <p className="text-sm opacity-75">KRS: 0001224296</p>
             <p className="text-sm opacity-75">NIP: 5253079744</p>
-            <p className="text-sm opacity-75">REGON: 544012170</p>
+            <p className="text-sm opacity-75">REGON: 54401217000000</p>
             <div className="mt-3 flex flex-col gap-2 text-sm">
               <a href="/polityka-prywatnosci" className="opacity-75 hover:opacity-100">Polityka prywatności / RODO</a>
               <a href="/polityka-cookies" className="opacity-75 hover:opacity-100">Polityka cookies</a>
@@ -37,7 +37,7 @@ const Footer = () => {
             <a href="mailto:finbiz.office@gmail.com" className="mt-3 block text-sm opacity-75 hover:opacity-100">finbiz.office@gmail.com</a>
           </div>
         </div>
-        <div className="border-t border-primary-foreground/20 pt-5 text-xs opacity-65">© {new Date().getFullYear()} FINBIZ CENTRUM SP. Z O.O. {t("footer.rights")}</div>
+        <div className="border-t border-primary-foreground/20 pt-5 text-xs opacity-65">© {new Date().getFullYear()} FINBIZ CENTRUM SPÓŁKA Z OGRANICZONĄ ODPOWIEDZIALNOŚCIĄ {t("footer.rights")}</div>
       </div>
     </footer>
   );
