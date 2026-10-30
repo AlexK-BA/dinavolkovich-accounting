@@ -4,9 +4,9 @@ const partners = [
   {
     name: "wFirma",
     href: "https://wfirma.pl/logowanie",
-    logo: "https://wfirma.pl/_public/wf/img/website/icons/i-logo-wfirma-20-blue.svg",
+    logo: "/wfirma-wordmark.svg",
     caption: { pl: "System księgowy", ru: "Бухгалтерская система", en: "Accounting platform" },
-    logoClass: "h-12 max-w-[210px]",
+    logoClass: "h-12 max-w-[220px]",
     dark: false,
   },
   {
