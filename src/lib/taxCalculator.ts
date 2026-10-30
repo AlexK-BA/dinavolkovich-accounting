@@ -41,11 +41,15 @@ export function calculateTax2026(input:TaxInputs): TaxResult[] {
  const costs=MAX(input.monthlyCosts)*activeMonths;
  const zus=SOCIAL[input.zusMode] || SOCIAL.full;
  const social=round((zus.base+(input.chorobowe?zus.sickness:0))*activeMonths);
+ // Full ZUS includes FP/FS (138.47 PLN in the model); this is a business cost,
+ // not a social-insurance contribution deductible from the ryczalt revenue base.
+ const fpfs=round((input.zusMode==="full"?138.47:0)*activeMonths);
+ const deductibleSocial=round(social-fpfs);
  const profit=MAX(revenue-costs-social);
  const additional=MAX(input.additionalDeduction);
  const healthSkala=round(Math.max((HEALTH_MIN*activeMonths-(startMonth===1?HEALTH_MIN-JANUARY_HEALTH_MIN:0)),profit*0.09));
  const healthLiniowy=round(Math.max((HEALTH_MIN*activeMonths-(startMonth===1?HEALTH_MIN-JANUARY_HEALTH_MIN:0)),profit*0.049));
- const ryczaltThresholdRevenue=MAX(revenue-social);
+ const ryczaltThresholdRevenue=MAX(revenue-deductibleSocial);
  const healthBand=ryczaltThresholdRevenue<=60000?RYCZALT_HEALTH.low:ryczaltThresholdRevenue<=300000?RYCZALT_HEALTH.mid:RYCZALT_HEALTH.high;
  const healthRyczalt=round(healthBand*activeMonths);
  const scaleBase=MAX(profit-additional);
@@ -53,7 +57,7 @@ export function calculateTax2026(input:TaxInputs): TaxResult[] {
  const linearBase=MAX(profit-additional-Math.min(healthLiniowy,LINEAR_HEALTH_DEDUCTION_LIMIT));
  const pitLiniowy=round(linearBase*0.19);
  const rate=Math.min(0.17,Math.max(0,Number.isFinite(input.ryczaltRate)?input.ryczaltRate:0.12));
- const ryczaltBase=MAX(revenue-social-healthRyczalt*0.5-additional);
+ const ryczaltBase=MAX(revenue-deductibleSocial-healthRyczalt*0.5-additional);
  const pitRyczalt=round(ryczaltBase*rate);
  const shared=["Model zakłada kolejne miesiące od wskazanego miesiąca 2026 r. i równomierne przychody i koszty.","Nie uwzględnia wszystkich ulg, ograniczeń, rozliczeń rocznych i zmian podstaw składek.","Kwoty składek i progów według danych na 2026 r.; wymagają indywidualnej weryfikacji."];
  return ([
