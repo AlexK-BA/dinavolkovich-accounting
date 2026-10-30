@@ -29,6 +29,7 @@ const SOCIAL = {
  full:{base:1788.29,sickness:138.47}
 } as const;
 const RYCZALT_HEALTH = {low:498.35,mid:830.58,high:1495.04};
+const JANUARY_HEALTH_MIN = 314.96;
 const HEALTH_MIN = 432.54; // minimum monthly health contribution February–December 2026\nconst JANUARY_HEALTH_MIN = 314.96; // January 2026 (previous contribution year)
 const LINEAR_HEALTH_DEDUCTION_LIMIT = 14100;
 export function calculateTax2026(input:TaxInputs): TaxResult[] {
@@ -40,7 +41,7 @@ export function calculateTax2026(input:TaxInputs): TaxResult[] {
  const profit=MAX(revenue-costs-social);
  const additional=MAX(input.additionalDeduction);
  const healthSkala=round(Math.max((JANUARY_HEALTH_MIN+HEALTH_MIN*(months-1)),profit*0.09));
- const healthLiniowy=round(Math.max((months===12?314.96+HEALTH_MIN*11:HEALTH_MIN*months),profit*0.049));
+ const healthLiniowy=round(Math.max((JANUARY_HEALTH_MIN+HEALTH_MIN*(months-1)),profit*0.049));
  const ryczaltThresholdRevenue=MAX(revenue-social);
  const healthBand=ryczaltThresholdRevenue<=60000?RYCZALT_HEALTH.low:ryczaltThresholdRevenue<=300000?RYCZALT_HEALTH.mid:RYCZALT_HEALTH.high;
  const healthRyczalt=round(healthBand*months);
