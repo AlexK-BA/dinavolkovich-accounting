@@ -84,3 +84,16 @@ describe("start month boundaries",()=>{
   expect(r[0].health).toBe(720);
  });
 });
+
+describe("linear health contribution start-month regression",()=>{
+ it("February one month: 432.54 minimum for linear and scale",()=>{
+  const r=calculateTax2026({...base,startMonth:2,months:1,zusMode:"start",monthlyRevenue:0,monthlyCosts:0});
+  expect(r[0].health).toBe(432.54);
+  expect(r[1].health).toBe(432.54);
+ });
+ it("December one month: 432.54 minimum for linear and scale",()=>{
+  const r=calculateTax2026({...base,startMonth:12,months:12,zusMode:"start",monthlyRevenue:0,monthlyCosts:0});
+  expect(r[0].health).toBe(432.54);
+  expect(r[1].health).toBe(432.54);
+ });
+});
