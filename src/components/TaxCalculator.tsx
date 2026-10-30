@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
-import { Calculator, TrendingUp } from "lucide-react";
+import { Calculator } from "lucide-react";
 import { Slider } from "@/components/ui/slider";
 import { calculateAnnual } from "@/lib/taxCalculator";
 import { useI18n } from "@/lib/i18n";
@@ -16,9 +16,9 @@ const TaxCalculator = () => {
   const { t } = useI18n();
 
   const results = useMemo(() => calculateAnnual(monthlyIncome, ryczaltRate, monthlyCosts * 12), [monthlyIncome, ryczaltRate, monthlyCosts]);
-  const betterRegime = results.ryczalt.annualNet > results.ogolne.annualNet ? "ryczalt" : "ogolne";
-  const savings = Math.abs(results.ryczalt.annualNet - results.ogolne.annualNet);
-  const betterData = betterRegime === "ryczalt" ? results.ryczalt : results.ogolne;
+  
+  
+  
 
   return (
     <section id="calculator" className="section-padding bg-card">
@@ -64,33 +64,20 @@ const TaxCalculator = () => {
             <div><label htmlFor="ryczalt-rate" className="text-sm font-semibold block mb-2">Stawka ryczałtu (do weryfikacji)</label><select id="ryczalt-rate" value={ryczaltRate} onChange={e => setRyczaltRate(Number(e.target.value))} className="w-full rounded-md border border-border bg-card p-3 text-sm">{[0.02,0.03,0.055,0.085,0.10,0.12,0.125,0.14,0.15,0.17].map(rate => <option key={rate} value={rate}>{rate * 100}%</option>)}</select></div>
             <div><label htmlFor="monthly-costs" className="text-sm font-semibold block mb-2">Koszty miesięczne (zł)</label><input id="monthly-costs" type="number" min="0" value={monthlyCosts} onChange={e => setMonthlyCosts(Math.max(0,Number(e.target.value)))} className="w-full rounded-md border border-border bg-card p-3 text-sm" /></div>
           </div>
-          {/* Illustrative comparison; no personalized recommendation */}
-          <div className="bg-primary rounded-xl p-6 mb-8 text-primary-foreground">
-            <div className="flex items-center justify-between flex-wrap gap-4">
-              <div className="flex items-center gap-3">
-                <TrendingUp className="w-6 h-6 text-accent" />
-                <div>
-                  <p className="font-semibold">Porównanie orientacyjne: {betterRegime === "ryczalt" ? "ryczałt" : "skala podatkowa"}</p>
-                  <p className="text-sm opacity-80">Różnica w uproszczonym modelu: {fmt(savings)} zł</p>
-                </div>
-              </div>
-              <div className="text-right">
-                <span className="text-2xl font-heading font-bold">{fmt(betterData.annualNet)} zł</span>
-                <p className="text-xs opacity-70">{t("calc.net.year")}</p>
-              </div>
-            </div>
+          <div role="note" className="rounded-xl border-2 border-primary/30 bg-primary/5 p-5 mb-7">
+            <h3 className="font-semibold text-foreground mb-2">Ważne: wyłącznie szacunek orientacyjny</h3>
+            <p className="text-sm text-muted-foreground leading-relaxed">Kalkulator przedstawia przybliżone wartości na podstawie podanych danych i uproszczonych założeń. Nie uwzględnia wszystkich okoliczności, ulg, wyjątków i indywidualnych zasad ZUS. Nie jest poradą podatkową, ofertą ani gwarancją wyniku. Ostateczne wyliczenie i dobór formy opodatkowania wymagają analizy przez profesjonalną księgową. <a href="#contact" className="underline text-primary">Skontaktuj się z FINBIZ CENTRUM</a>.</p>
           </div>
-
           {/* Comparison */}
           <div className="grid md:grid-cols-2 gap-6">
             {(["ryczalt", "ogolne"] as const).map((regime) => {
               const data = results[regime];
-              const isBetter = false;
+              
               return (
                 <div key={regime} className={`rounded-xl border p-6 ${isBetter ? "border-accent bg-background" : "border-border bg-background"}`}>
                   <div className="flex items-center justify-between mb-1">
                     <h3 className="text-lg font-semibold text-foreground">{regime === "ryczalt" ? `Ryczałt ${ryczaltRate * 100}%` : "Skala podatkowa"}</h3>
-                    {isBetter && <span className="text-xs font-semibold bg-accent text-accent-foreground px-2 py-0.5 rounded-full">{t("calc.better")}</span>}
+                    
                   </div>
                   <p className="text-xs text-muted-foreground mb-4">{t(`calc.${regime}.desc`)}</p>
                   <div className="space-y-3 text-sm">
@@ -107,7 +94,7 @@ const TaxCalculator = () => {
             })}
           </div>
 
-          <p className="text-xs text-muted-foreground mt-6 text-center">Symulacja orientacyjna, nie stanowi porady podatkowej. Składki ZUS i zdrowotne oraz odliczenia są uproszczone; wyniki wymagają weryfikacji przez księgowego. Przed wyborem formy opodatkowania skontaktuj się z biurem.</p>
+          <p className="text-xs text-muted-foreground mt-6 text-center">Wyniki są orientacyjne. Szczegóły: <a className="underline" href="/regulamin">Regulamin i zasady kalkulatora</a>.</p>
         </motion.div>
       </div>
     </section>
