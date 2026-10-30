@@ -1,9 +1,17 @@
 import {useMemo,useState} from "react";
-import {calculateTax2026, type ZusMode} from "@/lib/taxCalculator";
+import {calculateTax2026, type TaxResult, type ZusMode} from "@/lib/taxCalculator";
 import {useI18n} from "@/lib/i18n";
 const money=(n:number)=>n.toLocaleString("pl-PL",{maximumFractionDigits:2,minimumFractionDigits:2})+" zł";
 const rates=[0.02,0.03,0.055,0.085,0.10,0.12,0.125,0.14,0.15,0.17];
 const descriptions={skala:"Skala podatkowa",liniowy:"Podatek liniowy",ryczalt:"Ryczałt"};
+const pdfText = {
+ pl: {button:"Pobierz PDF",title:"Porównanie form opodatkowania JDG — 2026",subtitle:"Orientacyjna symulacja podatkowa",generated:"Data wygenerowania",period:"Okres",months:"miesięcy",revenue:"Przychód miesięczny",costs:"Koszty miesięczne",rate:"Stawka ryczałtu",zus:"Rodzaj ZUS",sickness:"Dobrowolne chorobowe",yes:"Tak",no:"Nie",annualRevenue:"Przychód roczny",annualCosts:"Koszty roczne",social:"Składki społeczne",health:"Składka zdrowotna",pit:"Podatek PIT",net:"Kwota po kosztach i podatkach",monthly:"Średnio miesięcznie",disclaimer:"UWAGA: Wyniki są szacunkowe, bazują na uproszczonych założeniach i nie stanowią porady podatkowej. Nie obejmują wszystkich ulg, wyjątków i zasad rozliczania składek. Ostateczne wyliczenie i wybór formy opodatkowania należy potwierdzić z księgową FINBIZ CENTRUM.",contact:"Kontakt: finbiz.office@gmail.com",regimes:["Skala podatkowa","Podatek liniowy","Ryczałt"]},
+ ru: {button:"Скачать PDF",title:"Сравнение режимов налогообложения JDG — 2026",subtitle:"Предварительный налоговый расчёт",generated:"Дата формирования",period:"Период",months:"мес.",revenue:"Месячная выручка",costs:"Месячные расходы",rate:"Ставка ryczałt",zus:"Режим ZUS",sickness:"Добровольное chorobowe",yes:"Да",no:"Нет",annualRevenue:"Годовая выручка",annualCosts:"Годовые расходы",social:"Социальные взносы",health:"Медицинские взносы",pit:"Налог PIT",net:"Остаток после расходов и налогов",monthly:"В среднем за месяц",disclaimer:"ВНИМАНИЕ: Расчёты приблизительные и основаны на упрощённых допущениях. Это не налоговая консультация. Учтены не все льготы, исключения и правила взносов. Итоговые расчёты и выбор режима необходимо подтвердить у бухгалтера FINBIZ CENTRUM.",contact:"Контакт: finbiz.office@gmail.com",regimes:["Налоговая шкала","Линейный налог","Ryczałt"]},
+ en: {button:"Download PDF",title:"JDG tax regime comparison — 2026",subtitle:"Indicative tax estimate",generated:"Generated on",period:"Period",months:"months",revenue:"Monthly revenue",costs:"Monthly costs",rate:"Ryczałt rate",zus:"ZUS category",sickness:"Voluntary sickness insurance",yes:"Yes",no:"No",annualRevenue:"Annual revenue",annualCosts:"Annual costs",social:"Social contributions",health:"Health contributions",pit:"PIT income tax",net:"Net after expenses and taxes",monthly:"Monthly average",disclaimer:"IMPORTANT: These figures are estimates based on simplified assumptions, not tax advice. Not all reliefs, exceptions or contribution rules are included. Confirm final figures and tax regime eligibility with a FINBIZ CENTRUM accountant.",contact:"Contact: finbiz.office@gmail.com",regimes:["Tax scale","Flat tax","Ryczałt"]},
+} as const;
+const zusLabels = {pl:{start:"Ulga na start",preferential:"Preferencyjny ZUS",full:"Pełny ZUS"},ru:{start:"Ulga na start",preferential:"Льготный ZUS",full:"Полный ZUS"},en:{start:"Start-up relief",preferential:"Preferential ZUS",full:"Full ZUS"}} as const;
+const regimeOrder = ["skala","liniowy","ryczalt"] as const;
+
 export default function TaxCalculator(){
  const {lang}=useI18n();
  const [detailed,setDetailed]=useState(false);
@@ -16,6 +24,8 @@ export default function TaxCalculator(){
  const [startMonth,setStartMonth]=useState(1);
  const [deduction,setDeduction]=useState(0);
  const result=useMemo(()=>calculateTax2026({monthlyRevenue:revenue,monthlyCosts:costs,ryczaltRate:rate,zusMode,chorobowe,months,startMonth,additionalDeduction:deduction}),[revenue,costs,rate,zusMode,chorobowe,months,startMonth,deduction]);
+ const pdf=pdfText[lang];
+ const printPdf=()=>{window.print();};
  const numberField=(label:string,value:number,change:(n:number)=>void,max?:number)=><label className="block text-sm font-semibold">{label}<input className="mt-2 w-full rounded-md border border-border bg-background p-3" type="number" min="0" max={max} value={value} onChange={e=>change(Math.max(0,Number(e.target.value)||0))}/></label>;
  return <section id="calculator" className="section-padding bg-card"><div className="max-w-6xl mx-auto">
   <h2 className="text-3xl md:text-4xl font-bold mb-3">Kalkulator podatkowy JDG 2026</h2>
@@ -35,11 +45,30 @@ export default function TaxCalculator(){
    <label className="block text-sm font-semibold">Składki społeczne ZUS<select className="mt-2 w-full rounded-md border border-border bg-background p-3" value={zusMode} onChange={e=>setZusMode(e.target.value as ZusMode)}><option value="full">Pełny ZUS</option><option value="preferential">Preferencyjny ZUS</option><option value="start">Ulga na start</option></select></label>
    {detailed&&<><label className="flex items-center gap-3 text-sm"><input type="checkbox" checked={chorobowe} onChange={e=>setChorobowe(e.target.checked)}/>Dobrowolne chorobowe</label>{numberField("Miesiąc rozpoczęcia (1–12)",startMonth,n=>setStartMonth(Math.min(12,Math.max(1,n))),12)}{numberField("Liczba miesięcy działalności",months,n=>setMonths(Math.min(12,Math.max(1,n))),12)}{numberField("Inne odliczenia roczne (zł) — tylko kwalifikowane",deduction,setDeduction)}</>}
   </div>
+  <div className="mb-5"><button type="button" onClick={printPdf} className="rounded-md bg-primary text-primary-foreground px-5 py-3 font-semibold hover:opacity-90" aria-label={pdf.button}>{pdf.button}</button></div>
   <div className="grid md:grid-cols-3 gap-5">{result.map(r=><article key={r.regime} className="rounded-xl border border-border bg-background p-5">
    <h3 className="text-xl font-semibold mb-3">{descriptions[r.regime]}</h3>
    <p className="text-xs text-muted-foreground mb-2">Szacunkowo na rękę / rok</p><p className="text-2xl font-bold text-primary mb-5">{money(r.net)}</p>
    <dl className="text-sm space-y-3">{[["Przychód",r.annualRevenue],["Koszty",r.annualCosts],["ZUS społeczny",r.social],["Składka zdrowotna",r.health],["Podatek PIT",r.pit],["Średnio na miesiąc",r.monthlyNet]].map(([k,v])=><div key={String(k)} className="flex justify-between gap-2"><dt className="text-muted-foreground">{k}</dt><dd className="font-medium text-right">{money(Number(v))}</dd></div>)}</dl>
   </article>)}</div>
   <p className="text-xs text-muted-foreground mt-6">Model szacunkowy 2026. Nie uwzględnia m.in. Małego ZUS Plus, wakacji składkowych, pełnej listy ulg, innych źródeł dochodu, indywidualnych zasad rozliczenia składki zdrowotnej i wszystkich wyjątków. W przypadku takich sytuacji wymagane jest indywidualne wyliczenie. <a href="/regulamin" className="underline">Regulamin kalkulatora</a>.</p>
- </div></section>;
+ </div>
+ <div id="tax-print-report" className="tax-print-report" aria-hidden="true">
+  <header className="tax-print-header"><img src="/finbiz-logo.svg" alt="FINBIZ CENTRUM"/><div><h1>{pdf.title}</h1><p>{pdf.subtitle}</p></div></header>
+  <p className="tax-print-date">{pdf.generated}: {new Intl.DateTimeFormat(lang==="pl"?"pl-PL":lang==="ru"?"ru-RU":"en-GB",{dateStyle:"long"}).format(new Date())}</p>
+  <div className="tax-print-inputs">
+   <p><strong>{pdf.period}:</strong> {startMonth}–{Math.min(12,startMonth+months-1)} / 2026 ({Math.min(months,13-startMonth)} {pdf.months})</p>
+   <p><strong>{pdf.revenue}:</strong> {money(revenue)}</p>
+   <p><strong>{pdf.costs}:</strong> {money(costs)}</p>
+   <p><strong>{pdf.rate}:</strong> {rate*100}%</p>
+   <p><strong>{pdf.zus}:</strong> {zusLabels[lang][zusMode]}</p>
+   <p><strong>{pdf.sickness}:</strong> {chorobowe?pdf.yes:pdf.no}</p>
+  </div>
+  <table><thead><tr><th></th>{regimeOrder.map((regime,i)=><th key={regime}>{pdf.regimes[i]}</th>)}</tr></thead><tbody>
+   {([[pdf.annualRevenue,"annualRevenue"],[pdf.annualCosts,"annualCosts"],[pdf.social,"social"],[pdf.health,"health"],[pdf.pit,"pit"],[pdf.net,"net"],[pdf.monthly,"monthlyNet"]] as [string,keyof TaxResult][]).map(([label,key])=><tr key={key}><th>{label}</th>{result.map(r=><td key={r.regime}>{money(r[key] as number)}</td>)}</tr>)}
+  </tbody></table>
+  <p className="tax-print-disclaimer">{pdf.disclaimer}</p>
+  <footer>FINBIZ CENTRUM · finbizcentrum.pl · {pdf.contact}</footer>
+ </div>
+ </section>;
 }
