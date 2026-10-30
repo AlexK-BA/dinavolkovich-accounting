@@ -5,15 +5,15 @@ import { useI18n } from "@/lib/i18n";
 const Hero = () => {
   const { t } = useI18n();
   return (
-    <section className="relative min-h-screen flex items-center section-padding pt-32">
-      <div className="max-w-7xl mx-auto w-full grid lg:grid-cols-2 gap-12 items-center">
+    <section className="relative flex items-center section-padding pt-28 md:pt-32 pb-12 md:pb-16">
+      <div className="max-w-7xl mx-auto w-full grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, ease: "easeOut" }}
         >
           <div className="gold-line w-16 mb-6" />
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-foreground">
+          <h1 className="text-4xl md:text-5xl lg:text-[3.5rem] font-bold leading-tight text-foreground">
             {t("hero.t1")}
             <br />
             <span className="text-primary">{t("hero.t2")}</span>
@@ -31,7 +31,7 @@ const Hero = () => {
               {t("hero.cta2")}
             </a>
           </div>
-          <div className="mt-12 flex items-center gap-8 text-sm text-muted-foreground">
+          <div className="mt-8 flex flex-wrap items-center gap-5 md:gap-8 text-sm text-muted-foreground">
             <div>
               <span className="text-2xl font-heading font-bold text-foreground">50+</span>
               <br />{t("hero.stat1")}
