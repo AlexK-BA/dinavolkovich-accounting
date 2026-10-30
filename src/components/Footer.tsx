@@ -1,4 +1,4 @@
-import logo from "@/assets/logo.png";
+const logo = "/finbiz-logo.svg";
 import { useI18n } from "@/lib/i18n";
 
 const Footer = () => {
@@ -8,7 +8,7 @@ const Footer = () => {
       <div className="max-w-7xl mx-auto">
         <div className="grid md:grid-cols-3 gap-8 mb-10">
           <div>
-            <img src={logo} alt="FinBiz Centrum" className="h-12 w-auto object-contain brightness-0 invert mb-4" />
+            <img src={logo} alt="FinBiz Centrum" className="block w-[220px] max-w-full h-auto object-contain brightness-0 invert mb-5" />
             <p className="text-sm opacity-60 leading-relaxed">{t("footer.desc")}</p>
           </div>
           <div>

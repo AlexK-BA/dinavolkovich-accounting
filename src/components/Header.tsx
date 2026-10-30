@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Menu, X, ChevronDown, ExternalLink } from "lucide-react";
-import logo from "@/assets/logo.png";
+const logo = "/finbiz-logo.svg";
 import { useI18n, type Lang } from "@/lib/i18n";
 
 const langLabels: Record<Lang, string> = { ru: "RU", en: "EN", pl: "PL" };
@@ -25,7 +25,7 @@ const Header = () => {
     <header className="fixed top-0 left-0 right-0 z-50 bg-background/90 backdrop-blur-md border-b border-border">
       <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
         <a href="#" className="flex items-center gap-3">
-          <img src={logo} alt="FinBiz Centrum" className="h-12 md:h-14 w-auto max-w-[190px] object-contain" />
+          <img src={logo} alt="FinBiz Centrum" className="block h-auto w-[168px] sm:w-[190px] lg:w-[210px] max-w-full object-contain" />
         </a>
         <nav className="hidden md:flex items-center gap-5 lg:gap-7">
           {navLinks.map((l) => (
