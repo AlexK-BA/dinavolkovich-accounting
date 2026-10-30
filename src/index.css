@@ -69,3 +69,28 @@
     @apply py-12 md:py-16 px-5 md:px-10 lg:px-16;
   }
 }
+
+/* PDF export uses the browser's print-to-PDF dialog, no server-side data transfer. */
+.tax-print-report { display: none; }
+@media print {
+ @page { size: A4; margin: 13mm; }
+ html, body, #root { background: white !important; color: #172a23 !important; }
+ body * { visibility: hidden !important; }
+ .tax-print-report, .tax-print-report * { visibility: visible !important; }
+ .tax-print-report { display: block !important; position: absolute; top: 0; left: 0; width: 100%; font-family: Arial, sans-serif; font-size: 10pt; line-height: 1.4; color: #172a23; }
+ .tax-print-header { display: flex; align-items: center; gap: 18px; padding-bottom: 14px; border-bottom: 2px solid #c8a456; }
+ .tax-print-header img { width: 150px; height: auto; }
+ .tax-print-header h1 { font-size: 18pt; font-weight: 700; margin: 0 0 5px; }
+ .tax-print-header p, .tax-print-date { color: #54615a; margin: 0; }
+ .tax-print-date { margin: 12px 0; font-size: 9pt; }
+ .tax-print-inputs { display: grid; grid-template-columns: 1fr 1fr; gap: 5px 15px; margin: 12px 0 20px; }
+ .tax-print-inputs p { margin: 0; }
+ .tax-print-report table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+ .tax-print-report th, .tax-print-report td { border: 1px solid #cdd6d1; padding: 9px 6px; text-align: right; overflow-wrap: anywhere; }
+ .tax-print-report th:first-child { text-align: left; width: 30%; }
+ .tax-print-report thead { background: #edf3ee; }
+ .tax-print-report tbody tr:nth-last-child(2) { background: #edf3ee; font-weight: 700; }
+ .tax-print-disclaimer { border: 1px solid #c8a456; padding: 12px; margin-top: 20px; font-size: 9pt; break-inside: avoid; }
+ .tax-print-report footer { border-top: 1px solid #cdd6d1; margin-top: 20px; padding-top: 10px; font-size: 9pt; }
+ .tax-print-report tr, .tax-print-header { break-inside: avoid; }
+}
