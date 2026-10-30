@@ -39,9 +39,10 @@ export function calculateTax2026(input:TaxInputs): TaxResult[] {
  const social=round((zus.base+(input.chorobowe?zus.sickness:0))*months);
  const profit=MAX(revenue-costs-social);
  const additional=MAX(input.additionalDeduction);
- const healthSkala=round(Math.max(HEALTH_MIN*months,profit*0.09));
- const healthLiniowy=round(Math.max(HEALTH_MIN*months,profit*0.049));
- const healthBand=revenue<=60000?RYCZALT_HEALTH.low:revenue<=300000?RYCZALT_HEALTH.mid:RYCZALT_HEALTH.high;
+ const healthSkala=round(Math.max((months===12?314.96+HEALTH_MIN*11:HEALTH_MIN*months),profit*0.09));
+ const healthLiniowy=round(Math.max((months===12?314.96+HEALTH_MIN*11:HEALTH_MIN*months),profit*0.049));
+ const ryczaltThresholdRevenue=MAX(revenue-social);
+ const healthBand=ryczaltThresholdRevenue<=60000?RYCZALT_HEALTH.low:ryczaltThresholdRevenue<=300000?RYCZALT_HEALTH.mid:RYCZALT_HEALTH.high;
  const healthRyczalt=round(healthBand*months);
  const scaleBase=MAX(profit-additional);
  const pitSkala=round(Math.max(0,Math.min(scaleBase,120000)*0.12-3600)+Math.max(0,scaleBase-120000)*0.32);
