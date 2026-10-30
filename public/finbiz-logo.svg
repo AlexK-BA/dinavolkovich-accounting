@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 290" role="img" aria-labelledby="title desc">
+<title id="title">FINBIZ CENTRUM</title><desc id="desc">Green and gold financial growth shield, FINBIZ CENTRUM wordmark</desc>
+<defs>
+<linearGradient id="green" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#0a3825"/><stop offset="1" stop-color="#277448"/></linearGradient>
+<linearGradient id="gold" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f0cc72"/><stop offset=".6" stop-color="#d5a84e"/><stop offset="1" stop-color="#ac782d"/></linearGradient>
+</defs>
+<path d="M135 20 C103 37 69 42 28 43 L28 131 C28 193 63 233 135 271 C203 237 242 193 242 131 L242 43 C203 41 170 37 135 20Z" fill="url(#green)"/>
+<path d="M135 271 C203 237 242 193 242 131 L242 43 L210 58 L210 133 C210 181 180 215 135 239Z" fill="url(#gold)"/>
+<path d="M59 173 V128 H83 V185 L59 194Z M94 186 V102 H119 V193 L94 203Z M130 189 V73 H157 V174 L130 196Z" fill="#fff"/>
+<path d="M30 190 C83 232 143 177 189 114 L175 104 L249 45 L247 133 L227 119 C172 203 93 257 30 207Z" fill="url(#gold)" stroke="#fff" stroke-width="6" stroke-linejoin="round"/>
+<text x="285" y="162" fill="#103d2a" font-family="Georgia,'Times New Roman',serif" font-size="135" letter-spacing="0">FINBIZ</text>
+<path d="M289 219 H339 M830 219 H881" stroke="#cba04d" stroke-width="3"/>
+<text x="363" y="236" fill="#353c3b" font-family="Georgia,'Times New Roman',serif" font-size="48" letter-spacing="15">CENTRUM</text>
+</svg>
