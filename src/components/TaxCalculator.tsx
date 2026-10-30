@@ -51,13 +51,14 @@ export default function TaxCalculator(){
    <label className="block text-sm font-semibold">{ui.zus}<select className="mt-2 w-full rounded-md border border-border bg-background p-3" value={zusMode} onChange={e=>setZusMode(e.target.value as ZusMode)}><option value="full">{zusLabels[lang].full}</option><option value="preferential">{zusLabels[lang].preferential}</option><option value="start">{zusLabels[lang].start}</option></select></label>
    {detailed&&<><label className="flex items-center gap-3 text-sm"><input type="checkbox" checked={chorobowe} onChange={e=>setChorobowe(e.target.checked)}/>{ui.sickness}</label>{numberField(ui.start,startMonth,n=>setStartMonth(Math.min(12,Math.max(1,n))),12)}{numberField(ui.months,months,n=>setMonths(Math.min(12,Math.max(1,n))),12)}{numberField(ui.deduction,deduction,setDeduction)}</>}
   </div>
+  {zusMode==="start"&&months>6&&<p role="alert" className="mb-5 text-sm font-semibold text-destructive">Ulga na start: model nie uwzględnia zakończenia sześciomiesięcznej ulgi. Dla okresu dłuższego niż 6 miesięcy wynik może być zawyżony — skonsultuj się z księgową.</p>}
   <div className="mb-5"><button type="button" onClick={printPdf} className="rounded-md bg-primary text-primary-foreground px-5 py-3 font-semibold hover:opacity-90" aria-label={pdf.button}>{pdf.button}</button></div>
   <div className="grid md:grid-cols-3 gap-5">{result.map(r=><article key={r.regime} className="rounded-xl border border-border bg-background p-5">
    <h3 className="text-xl font-semibold mb-3">{ui.regimes[regimeOrder.indexOf(r.regime)]}</h3>
    <p className="text-xs text-muted-foreground mb-2">{ui.net}</p><p className="text-2xl font-bold text-primary mb-5">{money(r.net)}</p>
    <dl className="text-sm space-y-3">{[[ui.annualRevenue,r.annualRevenue],[ui.annualCosts,r.annualCosts],[ui.social,r.social],[ui.health,r.health],[ui.pit,r.pit],[ui.monthly,r.monthlyNet]].map(([k,v])=><div key={String(k)} className="flex justify-between gap-2"><dt className="text-muted-foreground">{k}</dt><dd className="font-medium text-right">{money(Number(v))}</dd></div>)}</dl>
   </article>)}</div>
-  <p className="text-xs text-muted-foreground mt-6">{ui.disclaimer} <a href="/regulamin" className="underline">{ui.terms}</a>.</p>
+  <p className="text-xs text-muted-foreground mt-6">{ui.disclaimer} <a href="mailto:grossbuh23@gmail.com" className="underline">{ui.contact}</a>.</p>
  </div>
  <div id="tax-print-report" className="tax-print-report">
   <header className="tax-print-header"><img src="/finbiz-logo.svg" alt="FINBIZ CENTRUM"/><div><h1>{pdf.title}</h1><p>{pdf.subtitle}</p></div></header>
