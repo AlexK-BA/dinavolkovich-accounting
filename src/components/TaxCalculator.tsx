@@ -13,8 +13,9 @@ export default function TaxCalculator(){
  const [zusMode,setZusMode]=useState<ZusMode>("full");
  const [chorobowe,setChorobowe]=useState(true);
  const [months,setMonths]=useState(12);
+ const [startMonth,setStartMonth]=useState(1);
  const [deduction,setDeduction]=useState(0);
- const result=useMemo(()=>calculateTax2026({monthlyRevenue:revenue,monthlyCosts:costs,ryczaltRate:rate,zusMode,chorobowe,months,additionalDeduction:deduction}),[revenue,costs,rate,zusMode,chorobowe,months,deduction]);
+ const result=useMemo(()=>calculateTax2026({monthlyRevenue:revenue,monthlyCosts:costs,ryczaltRate:rate,zusMode,chorobowe,months,startMonth,additionalDeduction:deduction}),[revenue,costs,rate,zusMode,chorobowe,months,startMonth,deduction]);
  const numberField=(label:string,value:number,change:(n:number)=>void,max?:number)=><label className="block text-sm font-semibold">{label}<input className="mt-2 w-full rounded-md border border-border bg-background p-3" type="number" min="0" max={max} value={value} onChange={e=>change(Math.max(0,Number(e.target.value)||0))}/></label>;
  return <section id="calculator" className="section-padding bg-card"><div className="max-w-6xl mx-auto">
   <h2 className="text-3xl md:text-4xl font-bold mb-3">Kalkulator podatkowy JDG 2026</h2>
@@ -32,7 +33,7 @@ export default function TaxCalculator(){
    {numberField("Koszty miesięczne (zł)",costs,setCosts)}
    <label className="block text-sm font-semibold">Stawka ryczałtu — wymaga potwierdzenia PKWiU<select className="mt-2 w-full rounded-md border border-border bg-background p-3" value={rate} onChange={e=>setRate(Number(e.target.value))}>{rates.map(r=><option key={r} value={r}>{(r*100).toLocaleString("pl-PL")}%</option>)}</select></label>
    <label className="block text-sm font-semibold">Składki społeczne ZUS<select className="mt-2 w-full rounded-md border border-border bg-background p-3" value={zusMode} onChange={e=>setZusMode(e.target.value as ZusMode)}><option value="full">Pełny ZUS</option><option value="preferential">Preferencyjny ZUS</option><option value="start">Ulga na start</option></select></label>
-   {detailed&&<><label className="flex items-center gap-3 text-sm"><input type="checkbox" checked={chorobowe} onChange={e=>setChorobowe(e.target.checked)}/>Dobrowolne chorobowe</label>{numberField("Miesiące prowadzenia działalności",months,n=>setMonths(Math.min(12,Math.max(1,n))),12)}{numberField("Inne odliczenia roczne (zł) — tylko kwalifikowane",deduction,setDeduction)}</>}
+   {detailed&&<><label className="flex items-center gap-3 text-sm"><input type="checkbox" checked={chorobowe} onChange={e=>setChorobowe(e.target.checked)}/>Dobrowolne chorobowe</label>{numberField("Miesiąc rozpoczęcia (1–12)",startMonth,n=>setStartMonth(Math.min(12,Math.max(1,n))),12)}{numberField("Liczba miesięcy działalności",months,n=>setMonths(Math.min(12,Math.max(1,n))),12)}{numberField("Inne odliczenia roczne (zł) — tylko kwalifikowane",deduction,setDeduction)}</>}
   </div>
   <div className="grid md:grid-cols-3 gap-5">{result.map(r=><article key={r.regime} className="rounded-xl border border-border bg-background p-5">
    <h3 className="text-xl font-semibold mb-3">{descriptions[r.regime]}</h3>
