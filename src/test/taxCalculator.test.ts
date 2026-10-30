@@ -11,3 +11,58 @@ describe("2026 JDG estimator",()=>{
  it("increases ryczalt tax when rate rises",()=>expect(calculateTax2026({...base,ryczaltRate:0.17})[2].pit).toBeGreaterThan(calculateTax2026({...base,ryczaltRate:0.03})[2].pit));
  it("does not produce negative PIT",()=>expect(calculateTax2026({...base,monthlyRevenue:0})[0].pit).toBe(0));
 });
+
+describe("independent numerical reference scenarios",()=>{
+ const scenario=(overrides:Partial<TaxInputs>)=>calculateTax2026({...base,...overrides});
+ it("full ZUS and chorobowe reference",()=>{
+   const r=scenario({});
+   expect(r[0].social).toBe(23121.12);
+   expect(r[1].social).toBe(23121.12);
+   expect(r[2].social).toBe(23121.12);
+ });
+ it("preferential ZUS with and without chorobowe",()=>{
+   expect(scenario({zusMode:"preferential",chorobowe:true})[0].social).toBe(5474.16);
+   expect(scenario({zusMode:"preferential",chorobowe:false})[0].social).toBe(5050.32);
+ });
+ it("ulga na start does not remove health",()=>{
+   const r=scenario({zusMode:"start",monthlyRevenue:0,monthlyCosts:0});
+   expect(r[0].social).toBe(0);
+   expect(r[0].health).toBeGreaterThan(0);
+   expect(r[2].health).toBe(5980.2);
+ });
+ it("skala: zero tax until 30k taxable income",()=>{
+   expect(scenario({zusMode:"start",monthlyRevenue:2500,monthlyCosts:0})[0].pit).toBe(0);
+   expect(scenario({zusMode:"start",monthlyRevenue:5000,monthlyCosts:0})[0].pit).toBe(3600);
+ });
+ it("skala: 32 percent marginal above 120k",()=>{
+   expect(scenario({zusMode:"start",monthlyRevenue:15000,monthlyCosts:0})[0].pit).toBe(30000);
+ });
+ it("liniowy: 19 percent after eligible health deduction",()=>{
+   const r=scenario({zusMode:"start",monthlyRevenue:10000,monthlyCosts:0})[1];
+   expect(r.health).toBe(5880);
+   expect(r.pit).toBe(21682.8);
+ });
+ it("ryczalt: 60k and 300k bands after social",()=>{
+   expect(scenario({zusMode:"start",monthlyRevenue:5000})[2].health).toBe(5980.2);
+   expect(scenario({zusMode:"start",monthlyRevenue:5000.01})[2].health).toBe(9966.96);
+   expect(scenario({zusMode:"start",monthlyRevenue:25000})[2].health).toBe(9966.96);
+   expect(scenario({zusMode:"start",monthlyRevenue:25000.01})[2].health).toBe(17940.48);
+ });
+ it("deducts 50 percent health from ryczalt PIT base",()=>{
+   const r=scenario({zusMode:"start",monthlyRevenue:5000,monthlyCosts:0,ryczaltRate:0.12})[2];
+   expect(r.pit).toBe(6841.19);
+ });
+ it("all three regimes satisfy net accounting identity",()=>{
+   for(const rev of [0,1000,5000,12000,25000,40000]){
+    for(const cost of [0,2000,8000]){
+     for(const zusMode of ["start","preferential","full"] as const){
+      for(const r of scenario({monthlyRevenue:rev,monthlyCosts:cost,zusMode})){
+       expect(r.net).toBeCloseTo(r.annualRevenue-r.annualCosts-r.social-r.health-r.pit,2);
+       expect(Number.isFinite(r.net)).toBe(true);
+       expect(r.pit).toBeGreaterThanOrEqual(0);
+      }
+     }
+    }
+   }
+ });
+});
