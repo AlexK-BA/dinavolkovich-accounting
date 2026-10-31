@@ -27,6 +27,7 @@ const Footer = () => {
               <p>KRS: 0001224296</p>
               <p>NIP: 5253079744</p>
               <p>REGON: 54401217000000</p>
+              <a href="mailto:grossbuh23@gmail.com" className="block pt-2 underline underline-offset-2 hover:opacity-100">grossbuh23@gmail.com</a>
             </div>
           </div>
         </div>
