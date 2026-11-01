@@ -48,9 +48,10 @@ export function calculateTax2026(input:TaxInputs): TaxResult[] {
  const deductibleSocial=round(social-fpfs);
  const profit=MAX(revenue-costs-social);
  const additional=MAX(input.additionalDeduction);
- const monthlyProfit=profit/activeMonths;
- const healthSkala=round(Array.from({length:activeMonths},(_,i)=>Math.max(startMonth+i===1?JANUARY_HEALTH_MIN:HEALTH_MIN,monthlyProfit*0.09)).reduce((a,b)=>a+b,0));
- const healthLiniowy=round(Array.from({length:activeMonths},(_,i)=>Math.max(startMonth+i===1?JANUARY_HEALTH_MIN:HEALTH_MIN,monthlyProfit*0.049)).reduce((a,b)=>a+b,0));
+ const monthlyProfits=contributionMonths.map(mode=>MAX(MAX(input.monthlyRevenue)-MAX(input.monthlyCosts)-SOCIAL[mode].base-(input.chorobowe?SOCIAL[mode].sickness:0)));
+ // Estimated liability by individual month; actual ZUS payments are based on prior-month income.
+ const healthSkala=round(monthlyProfits.reduce((sum,p,i)=>sum+Math.max(startMonth+i===1?JANUARY_HEALTH_MIN:HEALTH_MIN,p*0.09),0));
+ const healthLiniowy=round(monthlyProfits.reduce((sum,p,i)=>sum+Math.max(startMonth+i===1?JANUARY_HEALTH_MIN:HEALTH_MIN,p*0.049),0));
  const ryczaltThresholdRevenue=MAX(revenue-deductibleSocial);
  const healthBand=ryczaltThresholdRevenue<=60000?RYCZALT_HEALTH.low:ryczaltThresholdRevenue<=300000?RYCZALT_HEALTH.mid:RYCZALT_HEALTH.high;
  const healthRyczalt=round(healthBand*activeMonths);
