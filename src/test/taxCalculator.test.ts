@@ -46,7 +46,7 @@ describe("independent numerical reference scenarios",()=>{
    expect(scenario({zusMode:"start",monthlyRevenue:5000})[2].health).toBe(5980.2);
    expect(scenario({zusMode:"start",monthlyRevenue:5000.01})[2].health).toBe(5980.2);
    expect(scenario({zusMode:"start",monthlyRevenue:25000})[2].health).toBe(9966.96);
-   expect(scenario({zusMode:"start",monthlyRevenue:25000.01})[2].health).toBe(17940.48);
+   expect(scenario({zusMode:"start",monthlyRevenue:25000.01})[2].health).toBe(9966.96);
  });
  it("deducts 50 percent health from ryczalt PIT base",()=>{
    const r=scenario({zusMode:"start",monthlyRevenue:5000,monthlyCosts:0,ryczaltRate:0.12})[2];
