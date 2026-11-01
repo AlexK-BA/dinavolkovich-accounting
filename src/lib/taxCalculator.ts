@@ -39,11 +39,12 @@ export function calculateTax2026(input:TaxInputs): TaxResult[] {
  const activeMonths=Math.min(months,13-startMonth);
  const revenue=MAX(input.monthlyRevenue)*activeMonths;
  const costs=MAX(input.monthlyCosts)*activeMonths;
- const zus=SOCIAL[input.zusMode] || SOCIAL.full;
- const social=round((zus.base+(input.chorobowe?zus.sickness:0))*activeMonths);
- // Full ZUS includes FP/FS (138.47 PLN in 2026); this is a business cost,
- // not a social-insurance contribution deductible from the ryczalt revenue base.
- const fpfs=round((input.zusMode==="full"?138.47:0)*activeMonths);
+ // For a simplified model, assume start-up relief begins in the selected first month.
+ // After six months, preferential contributions apply for the remaining months.
+ const contributionMonths=Array.from({length:activeMonths},(_,i):ZusMode=>input.zusMode==="start"&&i>=6?"preferential":input.zusMode);
+ const social=round(contributionMonths.reduce((sum,mode)=>{const z=SOCIAL[mode];return sum+z.base+(input.chorobowe?z.sickness:0);},0));
+ // FP/FS is not deductible as a social contribution from ryczalt revenue.
+ const fpfs=round(contributionMonths.filter(mode=>mode==="full").length*138.47);
  const deductibleSocial=round(social-fpfs);
  const profit=MAX(revenue-costs-social);
  const additional=MAX(input.additionalDeduction);
@@ -60,7 +61,7 @@ export function calculateTax2026(input:TaxInputs): TaxResult[] {
  const rate=Math.min(0.17,Math.max(0,Number.isFinite(input.ryczaltRate)?input.ryczaltRate:0.12));
  const ryczaltBase=MAX(revenue-deductibleSocial-healthRyczalt*0.5-additional);
  const pitRyczalt=round(ryczaltBase*rate);
- const shared=["Ulga na start jest modelowana wyłącznie dla wskazanego okresu; nie sprawdza limitu sześciu miesięcy ani daty rozpoczęcia ulgi.","Model zakłada kolejne miesiące od wskazanego miesiąca 2026 r. i równomierne przychody i koszty.","Nie uwzględnia wszystkich ulg, ograniczeń, rozliczeń rocznych i zmian podstaw składek.","Kwoty składek i progów według danych na 2026 r.; wymagają indywidualnej weryfikacji."];
+ const shared=["Ulga na start: model zakłada sześć pełnych miesięcy zwolnienia od początku wskazanego okresu, następnie składki preferencyjne; rzeczywisty termin zależy od daty rozpoczęcia działalności i historii ulg.","Model zakłada kolejne miesiące od wskazanego miesiąca 2026 r. i równomierne przychody i koszty.","Nie uwzględnia wszystkich ulg, ograniczeń, rozliczeń rocznych i zmian podstaw składek.","Kwoty składek i progów według danych na 2026 r.; wymagają indywidualnej weryfikacji."];
  return ([
   {regime:"skala",health:healthSkala,pit:pitSkala},
   {regime:"liniowy",health:healthLiniowy,pit:pitLiniowy},
