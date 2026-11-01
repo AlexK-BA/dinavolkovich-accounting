@@ -101,6 +101,7 @@ const TaxCalculator = () => {
             })}
           </div>
 
+          <p role="note" className="text-sm text-foreground mt-6 text-center font-medium">Uwaga / Внимание / Note: To tylko uproszczona symulacja (11 miesięcy, przykładowe składki i stawki), a nie indywidualna kalkulacja podatkowa. Это приблизительная модель, не налоговая консультация. This is an illustrative estimate, not tax advice. Stawka ryczałtu zależy od PKWiU.</p>
           <p className="text-xs text-muted-foreground mt-6 text-center">{t("calc.disclaimer")}</p>
         </motion.div>
       </div>
