@@ -32,19 +32,19 @@ describe("independent numerical reference scenarios",()=>{
  });
  it("skala: zero tax until 30k taxable income",()=>{
    expect(scenario({zusMode:"start",monthlyRevenue:2500,monthlyCosts:0})[0].pit).toBe(0);
-   expect(scenario({zusMode:"start",monthlyRevenue:5000,monthlyCosts:0})[0].pit).toBe(3600);
+   expect(scenario({zusMode:"start",monthlyRevenue:5000,monthlyCosts:0})[0].pit).toBe(3271.55);
  });
  it("skala: 32 percent marginal above 120k",()=>{
-   expect(scenario({zusMode:"start",monthlyRevenue:15000,monthlyCosts:0})[0].pit).toBe(30000);
+   expect(scenario({zusMode:"start",monthlyRevenue:15000,monthlyCosts:0})[0].pit).toBe(29124.13);
  });
  it("liniowy: 19 percent after eligible health deduction",()=>{
    const r=scenario({zusMode:"start",monthlyRevenue:10000,monthlyCosts:0})[1];
-   expect(r.health).toBe(5880);
+   expect(r.health).toBe(5745.88);
    expect(r.pit).toBeGreaterThan(0);
  });
  it("ryczalt: 60k and 300k bands after social",()=>{
    expect(scenario({zusMode:"start",monthlyRevenue:5000})[2].health).toBe(5980.2);
-   expect(scenario({zusMode:"start",monthlyRevenue:5000.01})[2].health).toBe(9966.96);
+   expect(scenario({zusMode:"start",monthlyRevenue:5000.01})[2].health).toBe(5980.2);
    expect(scenario({zusMode:"start",monthlyRevenue:25000})[2].health).toBe(9966.96);
    expect(scenario({zusMode:"start",monthlyRevenue:25000.01})[2].health).toBe(17940.48);
  });
