@@ -16,7 +16,7 @@ export interface AnnualResult {
 // 2026 approximate values for JDG
 const ZUS_PREF = 402.65; // preferential ZUS (first 24 months)
 const HEALTH_RYCZALT_BASE = 419.46; // health for ryczalt (income < 60k)
-const RYCZALT_RATE = 0.03; // 3% for IT services (gastronomia too)
+const RYCZALT_RATE = 0.12; // Illustrative rate for qualifying IT services; actual rate depends on PKWiU
 const PIT_RATE = 0.12; // 12% first bracket
 const PIT_FREE = 30000; // kwota wolna od podatku
 const HEALTH_OGOLNE_RATE = 0.09; // 9% of income for ogólne
