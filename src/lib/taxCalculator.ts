@@ -34,7 +34,7 @@ const JANUARY_HEALTH_MIN = 314.96;
 const HEALTH_MIN = 432.54; // minimum monthly health contribution February–December 2026
 const LINEAR_HEALTH_DEDUCTION_LIMIT = 14100;
 export function calculateTax2026(input:TaxInputs): TaxResult[] {
- const months=Math.min(12,Math.max(1,Math.round(MAX(input.months)||12)));
+ const months=Math.min(12,Math.max(1,Math.round(Number.isFinite(input.months) ? input.months : 12)));
  const startMonth=Math.min(12,Math.max(1,Math.round(MAX(input.startMonth??1))));
  const activeMonths=Math.min(months,13-startMonth);
  const revenue=MAX(input.monthlyRevenue)*activeMonths;
