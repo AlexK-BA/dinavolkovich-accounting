@@ -108,3 +108,14 @@ describe("full ZUS reference correction",()=>{
   expect(r[0].social).toBe(1788.29);
  });
 });
+
+describe("input normalization",()=>{
+ it("zero months is clamped to one month, not twelve",()=>{
+  const r=calculateTax2026({...base,months:0,startMonth:1});
+  expect(r[0].annualRevenue).toBe(10000);
+ });
+ it("non-finite months defaults to twelve",()=>{
+  const r=calculateTax2026({...base,months:Number.NaN,startMonth:1});
+  expect(r[0].annualRevenue).toBe(120000);
+ });
+});
