@@ -44,7 +44,7 @@ export function calculateTax2026(input:TaxInputs): TaxResult[] {
  const contributionMonths=Array.from({length:activeMonths},(_,i):ZusMode=>input.zusMode==="start"&&i>=6?"preferential":input.zusMode);
  const social=round(contributionMonths.reduce((sum,mode)=>{const z=SOCIAL[mode];return sum+z.base+(input.chorobowe?z.sickness:0);},0));
  // FP/FS is not deductible as a social contribution from ryczalt revenue.
- const fpfs=0; // FP/FS not modeled separately; do not subtract an invented fixed amount from social deductions.
+ const fpfs=round(contributionMonths.filter(mode=>mode==="full").length*138.47); // FP/FS included in full ZUS total, excluded from social-insurance deduction on ryczalt.
  const deductibleSocial=round(social-fpfs);
  const profit=MAX(revenue-costs-social);
  const additional=MAX(input.additionalDeduction);
@@ -62,7 +62,7 @@ export function calculateTax2026(input:TaxInputs): TaxResult[] {
  const rate=Math.min(0.17,Math.max(0,Number.isFinite(input.ryczaltRate)?input.ryczaltRate:0.12));
  const ryczaltBase=MAX(revenue-deductibleSocial-healthRyczalt*0.5-additional);
  const pitRyczalt=round(ryczaltBase*rate);
- const shared=["FP/FS i Fundusz Pracy: kalkulator nie rozdziela obecnie tych składek od składek społecznych. Weryfikacja indywidualna jest wymagana.","Ulga na start: model zakłada sześć pełnych miesięcy zwolnienia od początku wskazanego okresu, następnie składki preferencyjne; rzeczywisty termin zależy od daty rozpoczęcia działalności i historii ulg.","Model zakłada kolejne miesiące od wskazanego miesiąca 2026 r. i równomierne przychody i koszty.","Nie uwzględnia wszystkich ulg, ograniczeń, rozliczeń rocznych i zmian podstaw składek.","Kwoty składek i progów według danych na 2026 r.; wymagają indywidualnej weryfikacji."];
+ const shared=["FP/FS: w wariancie pełnego ZUS 138,47 zł miesięcznie jest uwzględnione w sumie obciążeń, ale nie w odliczeniu składek społecznych od przychodu na ryczałcie.","Ulga na start: model zakłada sześć pełnych miesięcy zwolnienia od początku wskazanego okresu, następnie składki preferencyjne; rzeczywisty termin zależy od daty rozpoczęcia działalności i historii ulg.","Model zakłada kolejne miesiące od wskazanego miesiąca 2026 r. i równomierne przychody i koszty.","Nie uwzględnia wszystkich ulg, ograniczeń, rozliczeń rocznych i zmian podstaw składek.","Kwoty składek i progów według danych na 2026 r.; wymagają indywidualnej weryfikacji."];
  return ([
   {regime:"skala",health:healthSkala,pit:pitSkala},
   {regime:"liniowy",health:healthLiniowy,pit:pitLiniowy},
