@@ -1,4 +1,4 @@
-import {useState,type FormEvent} from "react";
+import {useEffect,useState,type FormEvent} from "react";
 import {useParams,useSearchParams} from "react-router-dom";
 import {useI18n} from "@/lib/i18n";
 import TaxCalculatorV2 from "@/components/TaxCalculatorV2";
@@ -8,6 +8,7 @@ const data={
 "sp-zoo":{name:"Sp. z o.o.",price:1200,points:["Pełne księgi rachunkowe","CIT i VAT","Sprawozdania finansowe","Kadry i płace — do uzgodnienia"]}
 } as const;
 export default function PreviewServicePage(){
+useEffect(()=>{const meta=document.createElement("meta");meta.name="robots";meta.content="noindex,nofollow,noarchive";document.head.appendChild(meta);return ()=>meta.remove();},[]);
 const {slug}=useParams();const [params]=useSearchParams();const {lang}=useI18n();const [status,setStatus]=useState<"idle"|"sending"|"success"|"error">("idle");
 const p=slug&&Object.prototype.hasOwnProperty.call(data,slug)?data[slug as keyof typeof data]:null;
 const t={pl:["Powrót do oferty","Zakres obsługi","Cena od","Zapytaj o indywidualną ofertę","Rodzaj klienta","Osoba fizyczna","Planuję działalność","JDG","Sp. z o.o.","Inna firma","Branża / rodzaj działalności","Liczba dokumentów miesięcznie","Liczba pracowników","Status VAT","Usługi","Imię i nazwisko","Telefon","Email","Dodatkowe informacje","Zapoznałem/am się z","polityką prywatności","Wyślij zapytanie","Wysyłanie…","Zgłoszenie przyjęte przez usługę pocztową.","Nie udało się wysłać. Spróbuj ponownie.","Kalkulator podatkowy JDG 2026","Wyniki kalkulatora są szacunkowe i nie stanowią wyceny księgowości.","Zakres i ostateczna cena do potwierdzenia."],ru:["Назад к услугам","Что входит","Стоимость от","Запросить индивидуальное предложение","Тип клиента","Физическое лицо","Планирую открыть бизнес","JDG","Sp. z o.o.","Другое юрлицо","Сфера деятельности","Документов в месяц","Число сотрудников","Статус VAT","Услуги","Имя","Телефон","Email","Дополнительные детали","Я ознакомился(-ась) с","политикой конфиденциальности","Отправить заявку","Отправка…","Почтовый сервис принял заявку.","Не удалось отправить заявку.","Налоговый калькулятор JDG 2026","Расчёт налогов приблизительный и не является ценой бухгалтерских услуг.","Итоговая стоимость и состав согласуются индивидуально."],en:["Back to services","What's included","Starting from","Request a tailored quote","Client type","Individual","Planning a business","JDG","Sp. z o.o.","Other company","Industry","Monthly document count","Employees","VAT status","Services","Name","Phone","Email","Additional details","I have read the","privacy policy","Send enquiry","Sending…","Email service accepted the enquiry.","Unable to send.","JDG tax calculator 2026","Tax estimates are not accounting service quotes.","Final scope and price are subject to confirmation."]}[lang];
