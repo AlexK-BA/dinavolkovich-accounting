@@ -7,6 +7,7 @@ import { I18nProvider } from "@/lib/i18n";
 import Index from "./pages/Index";
 import TaxCalculatorV2 from "./components/TaxCalculatorV2";
 import DesignPreview from "./pages/DesignPreview";
+import PreviewLegalPage from "./pages/PreviewLegalPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -22,6 +23,9 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/calculator-preview" element={<div className="min-h-screen bg-background"><div className="bg-primary text-primary-foreground px-5 py-3 text-sm flex flex-wrap justify-between gap-2"><span>FINBIZ CENTRUM · Kalkulator JDG 2026 · Wersja testowa</span><a className="underline" href="/">Powrót na stronę główną / На главную</a></div><TaxCalculatorV2 /></div>} />
             <Route path="/design-preview" element={<DesignPreview />} />
+            <Route path="/design-preview/polityka-prywatnosci" element={<PreviewLegalPage kind="privacy" />} />
+            <Route path="/design-preview/polityka-cookies" element={<PreviewLegalPage kind="cookies" />} />
+            <Route path="/design-preview/regulamin" element={<PreviewLegalPage kind="terms" />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
