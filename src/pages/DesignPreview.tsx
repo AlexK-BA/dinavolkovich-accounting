@@ -10,6 +10,7 @@ import FAQ from "@/components/FAQ";
 import Contact from "@/components/Contact";
 import PartnerServices from "@/components/PartnerServices";
 import Footer from "@/components/Footer";
+import CookiePreferences from "@/components/CookiePreferences";
 
 const copy={
  pl:{badge:"Wersja testowa nowego designu",back:"Obecna strona",headline:"Księgowość, która daje Ci więcej czasu na biznes.",intro:"Obsługa JDG i sp. z o.o. w Polsce. Jasne zasady współpracy, wsparcie księgowej i pomoc w codziennych formalnościach.",cta:"Zapytaj o współpracę",more:"Zobacz usługi",nav:["Usługi","Cennik","Kalkulator","Kontakt"],trust:"Co zyskujesz?",points:["Obsługa JDG i sp. z o.o.","Kontakt po polsku, rosyjsku i angielsku","Przejrzysty proces współpracy"],note:"Koncepcja wizualna. Ceny i zakres usług wymagają potwierdzenia."},
@@ -41,6 +42,6 @@ export default function DesignPreview(){
    </div></section>
    <Services/><Pricing/><TaxCalculatorV2/><Process/><About/><Founder/><FAQ/><Contact/><PartnerServices/>
   </main>
-  <div className="bg-[#F3F0E9] text-center text-sm px-5 py-5">{t.note}</div><Footer/>
+  <div className="bg-[#F3F0E9] text-center text-sm px-5 py-5">{t.note}</div><Footer/><CookiePreferences/>
  </div>;
 }
