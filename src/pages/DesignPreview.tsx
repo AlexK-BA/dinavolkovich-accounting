@@ -1,13 +1,13 @@
 import {ArrowRight,ShieldCheck,CheckCircle2} from "lucide-react";
 import {useI18n} from "@/lib/i18n";
 import Services from "@/components/Services";
-import Pricing from "@/components/Pricing";
+import PreviewPricing from "@/components/PreviewPricing";
 import TaxCalculatorV2 from "@/components/TaxCalculatorV2";
 import Process from "@/components/Process";
 import About from "@/components/About";
 import Founder from "@/components/Founder";
 import FAQ from "@/components/FAQ";
-import Contact from "@/components/Contact";
+import PreviewContactForm from "@/components/PreviewContactForm";
 import PartnerServices from "@/components/PartnerServices";
 import Footer from "@/components/Footer";
 import CookiePreferences from "@/components/CookiePreferences";
@@ -40,7 +40,7 @@ export default function DesignPreview(){
      <ul className="space-y-6">{t.points.map(p=><li key={p} className="flex gap-3 items-start"><CheckCircle2 className="text-primary shrink-0 mt-0.5"/><span className="font-medium">{p}</span></li>)}</ul>
     </aside>
    </div></section>
-   <Services/><Pricing/><TaxCalculatorV2/><Process/><About/><Founder/><FAQ/><Contact/><PartnerServices/>
+   <Services/><PreviewPricing/><TaxCalculatorV2/><Process/><About/><Founder/><FAQ/><PreviewContactForm/><PartnerServices/>
   </main>
   <div className="bg-[#F3F0E9] text-center text-sm px-5 py-5">{t.note}</div><nav aria-label="Preview legal documents" className="bg-[#F3F0E9] px-5 pb-6 flex flex-wrap justify-center gap-5 text-sm underline"><a href="/design-preview/polityka-prywatnosci">{t.legal[0]}</a><a href="/design-preview/polityka-cookies">{t.legal[1]}</a><a href="/design-preview/regulamin">{t.legal[2]}</a></nav><Footer/><CookiePreferences/>
  </div>;
