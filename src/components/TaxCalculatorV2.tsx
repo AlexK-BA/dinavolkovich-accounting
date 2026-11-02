@@ -58,7 +58,7 @@ export default function TaxCalculator(){
    <p className="text-xs text-muted-foreground mb-2">{ui.net}</p><p className="text-2xl font-bold text-primary mb-5">{money(r.net)}</p>
    <dl className="text-sm space-y-3">{[[ui.annualRevenue,r.annualRevenue],[ui.annualCosts,r.annualCosts],[ui.social,r.social],[ui.health,r.health],[ui.pit,r.pit],[ui.monthly,r.monthlyNet]].map(([k,v])=><div key={String(k)} className="flex justify-between gap-2"><dt className="text-muted-foreground">{k}</dt><dd className="font-medium text-right">{money(Number(v))}</dd></div>)}</dl>
   </article>)}</div>
-  <p className="text-xs text-muted-foreground mt-6">{ui.disclaimer} <a href="mailto:grossbuh23@gmail.com" className="underline">{ui.contact}</a>.</p>
+  <p className="text-xs text-muted-foreground mt-6">{ui.disclaimer} <a href="/design-preview#contact" className="underline">{ui.contact}</a>.</p>
  </div>
  <div id="tax-print-report" className="tax-print-report">
   <header className="tax-print-header"><img src="/finbiz-logo.svg" alt="FINBIZ CENTRUM"/><div><h1>{pdf.title}</h1><p>{pdf.subtitle}</p></div></header>
