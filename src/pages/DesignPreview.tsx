@@ -11,6 +11,7 @@ import PreviewContactForm from "@/components/PreviewContactForm";
 import PartnerServices from "@/components/PartnerServices";
 import Footer from "@/components/Footer";
 import CookiePreferences from "@/components/CookiePreferences";
+import {useEffect} from "react";
 
 const copy={
  pl:{badge:"Wersja testowa nowego designu",back:"Obecna strona",headline:"Księgowość, która daje Ci więcej czasu na biznes.",intro:"Obsługa JDG i sp. z o.o. w Polsce. Jasne zasady współpracy, wsparcie księgowej i pomoc w codziennych formalnościach.",cta:"Zapytaj o współpracę",more:"Zobacz usługi",nav:["Usługi","Cennik","Kalkulator","Kontakt"],trust:"Co zyskujesz?",points:["Obsługa JDG i sp. z o.o.","Kontakt po polsku, rosyjsku i angielsku","Przejrzysty proces współpracy"],note:"Wersja testowa. Ceny, zakres usług i dokumenty prawne wymagają zatwierdzenia.",legal:["Polityka prywatności","Polityka cookies","Regulamin"]},
@@ -19,6 +20,7 @@ const copy={
 } as const;
 export default function DesignPreview(){
  const {lang,setLang}=useI18n();const t=copy[lang];
+ useEffect(()=>{const meta=document.createElement("meta");meta.name="robots";meta.content="noindex,nofollow,noarchive";document.head.appendChild(meta);return ()=>{meta.remove()};},[]);
  return <div className="min-h-screen bg-background text-foreground">
   <div className="bg-[#173D30] text-white px-5 py-2.5 text-sm"><div className="max-w-7xl mx-auto flex justify-between gap-3"><span>{t.badge}</span><a href="/" className="underline underline-offset-4">{t.back}</a></div></div>
   <header className="sticky top-0 z-40 bg-[#FAF9F6]/95 backdrop-blur border-b border-[#E5E1D9]">
