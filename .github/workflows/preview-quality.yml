@@ -21,7 +21,8 @@ jobs:
         with:
           node-version: "22"
           cache: npm
-      - run: npm ci
+      # Temporary until package-lock.json is regenerated from package.json.
+      - run: npm install --no-package-lock --no-audit --no-fund
       - name: TypeScript
         run: npx tsc --noEmit
       - name: Unit tests
