@@ -1,6 +1,6 @@
 // Vercel Node.js function. Configure RESEND_API_KEY and verified RESEND_FROM_EMAIL.
 // No secrets are exposed to the browser. No messages are persisted by this function.
-const recipient = "grossbuh23@gmail.com";
+const recipient = process.env.CONTACT_RECIPIENT_EMAIL || "grossbuh23@gmail.com";
 const MAX_BYTES = 12_000;
 const clean = (v, max) => typeof v === "string" ? v.trim().slice(0, max) : "";
 export default async function handler(req, res) {
