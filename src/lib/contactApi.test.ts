@@ -1,4 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
+// The Vercel handler is plain JavaScript outside the TypeScript source tree.
+// @ts-expect-error no TypeScript declaration for the serverless JavaScript entrypoint
 import handler from "../../api/contact.js";
 
 function invoke(body: Record<string, unknown>, method = "POST") {
