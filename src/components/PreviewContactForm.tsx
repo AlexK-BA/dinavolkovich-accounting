@@ -1,5 +1,6 @@
 import { useState, type FormEvent } from "react";
 import { useI18n } from "@/lib/i18n";
+import { previewContactConfig } from "@/lib/previewContactConfig";
 const translations = {
  pl: ["Zapytaj o współpracę","Imię","Telefon","Email","Rodzaj działalności","Wiadomość","Zapoznałem/am się z","polityką prywatności","Wyślij zapytanie","Wysyłanie…","Wysłano zgłoszenie do usługi pocztowej.","Nie udało się wysłać. Napisz na grossbuh23@gmail.com"],
  ru: ["Обсудить сотрудничество","Имя","Телефон","Email","Тип деятельности","Сообщение","Я ознакомился(-ась) с","политикой конфиденциальности","Отправить заявку","Отправка…","Почтовый сервис принял заявку.","Ошибка отправки. Напишите на grossbuh23@gmail.com"],
@@ -25,6 +26,6 @@ export default function PreviewContactForm() {
   <label className="sr-only">Website<input name="website" type="text" tabIndex={-1} autoComplete="off"/></label>
   <label className="flex items-start gap-2 text-sm"><input type="checkbox" name="privacy" required className="mt-1"/><span>{t[6]} <a className="underline" href="/design-preview/polityka-prywatnosci" target="_blank" rel="noopener noreferrer">{t[7]}</a>.</span></label>
   <button disabled={busy} className="rounded-lg bg-primary px-6 py-3 font-semibold text-primary-foreground disabled:opacity-60" type="submit">{busy?t[9]:t[8]}</button>
-  <div role="status" aria-live="polite">{status==="success"?<p className="text-sm text-primary">{t[10]}</p>:status==="error"?<p className="text-sm text-destructive">{t[11]}</p>:null}</div>
+  <div role="status" aria-live="polite">{status==="success"?<p className="text-sm text-primary">{t[10]}</p>:status==="error"?<p className="text-sm text-destructive">{t[11].replace("grossbuh23@gmail.com",previewContactConfig.email)}</p>:null}</div>
  </form></div></section>;
 }
