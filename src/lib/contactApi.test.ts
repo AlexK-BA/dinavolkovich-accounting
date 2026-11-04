@@ -32,6 +32,13 @@ describe("FINBIZ contact endpoint validation", () => {
     const result = await invoke({}, "GET");
     expect(result.code).toBe(405);
   });
+  it("rejects requests from an unexpected origin", async () => {
+    let code = 200;
+    const req = { method: "POST", headers: { origin: "https://attacker.example", host: "finbizcentrum.pl" }, body: { name: "Jan", phone: "511183644", type: "JDG", privacyAccepted: true } };
+    const res = { setHeader: vi.fn(), status(value: number) { code = value; return this; }, json: vi.fn() };
+    await handler(req, res);
+    expect(code).toBe(403);
+  });
   it("silently accepts honeypot submissions without sending mail", async () => {
     const result = await invoke({ website: "spam.example" });
     expect(result.code).toBe(200);
