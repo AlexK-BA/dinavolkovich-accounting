@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { useEffect } from "react";
 type Kind = "privacy" | "cookies" | "terms";
 const titles: Record<Kind,string> = {privacy:"Polityka prywatności (RODO)",cookies:"Polityka cookies",terms:"Regulamin korzystania ze strony i kalkulatora"};
 const sections: Record<Kind,{title:string;paragraphs:string[]}[]> = {
@@ -27,7 +28,7 @@ const sections: Record<Kind,{title:string;paragraphs:string[]}[]> = {
  {title:"7. Postanowienia końcowe",paragraphs:["Niniejszy projekt wymaga zatwierdzenia i dostosowania do rzeczywistych funkcji strony oraz przepisów mających zastosowanie do oferowanych usług."]}
  ]
 };
-const PreviewLegalPage = ({kind}:{kind:Kind}) => <main className="min-h-screen bg-background text-foreground px-5 py-10 md:py-16">
+const PreviewLegalPage = ({kind}:{kind:Kind}) => { useEffect(() => { const meta = document.createElement("meta"); meta.name = "robots"; meta.content = "noindex,nofollow,noarchive"; document.head.appendChild(meta); return () => meta.remove(); }, []); return <main className="min-h-screen bg-background text-foreground px-5 py-10 md:py-16">
  <div className="max-w-3xl mx-auto">
  <Link to="/design-preview" className="text-sm text-primary underline underline-offset-4">← FINBIZ CENTRUM</Link>
  <h1 className="text-3xl md:text-4xl font-bold mt-8 mb-4">{titles[kind]}</h1>
@@ -36,5 +37,5 @@ const PreviewLegalPage = ({kind}:{kind:Kind}) => <main className="min-h-screen b
  {sections[kind].map(section => <section key={section.title}><h2 className="font-semibold text-xl mb-3">{section.title}</h2><div className="space-y-3">{section.paragraphs.map((p,i)=><p key={i} className="text-sm md:text-base text-muted-foreground leading-relaxed">{p}</p>)}</div></section>)}
  </article>
  <nav className="flex flex-wrap gap-4 mt-7 text-sm text-primary">{(Object.keys(titles) as Kind[]).filter(k=>k!==kind).map(k=><Link key={k} className="underline" to={k==="privacy"?"/design-preview/polityka-prywatnosci":k==="cookies"?"/design-preview/polityka-cookies":"/design-preview/regulamin"}>{titles[k]}</Link>)}</nav>
- </div></main>;
+ </div></main>; };
 export default PreviewLegalPage;
