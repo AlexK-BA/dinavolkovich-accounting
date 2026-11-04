@@ -42,9 +42,9 @@ const t: Translations = {
   },
   "services.s2.title": { ru: "Бухгалтерия sp. z o.o.", en: "Sp. z o.o. Accounting", pl: "Księgowość sp. z o.o." },
   "services.s2.desc": {
-    ru: "Полная бухгалтерия для компаний, включая KPiR, CIT, VAT, годовую отчётность.",
-    en: "Full accounting for companies including KPiR, CIT, VAT, annual reports.",
-    pl: "Pełna księgowość dla spółek, w tym KPiR, CIT, VAT, sprawozdania roczne.",
+    ru: "Полный бухгалтерский учёт для sp. z o.o., включая CIT, VAT и годовую финансовую отчётность.",
+    en: "Full accounting for limited companies, including CIT, VAT and annual financial statements.",
+    pl: "Pełna księgowość dla spółek z o.o., w tym CIT, VAT i roczne sprawozdania finansowe.",
   },
   "services.s3.title": { ru: "Кадры и зарплаты", en: "Payroll & HR", pl: "Kadry i płace" },
   "services.s3.desc": {
