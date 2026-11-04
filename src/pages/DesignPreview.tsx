@@ -12,9 +12,9 @@ import PartnerServices from "@/components/PartnerServices";
 import Footer from "@/components/Footer";
 
 const copy={
- pl:{badge:"Wersja testowa nowego designu",back:"Obecna strona",headline:"Księgowość, która daje Ci więcej czasu na biznes.",intro:"Obsługa JDG i sp. z o.o. w Polsce. Jasne zasady współpracy, wsparcie księgowej i pomoc w codziennych formalnościach.",cta:"Zapytaj o współpracę",more:"Zobacz usługi",trust:"Co zyskujesz?",points:["Obsługa JDG i sp. z o.o.","Kontakt po polsku, rosyjsku i angielsku","Przejrzysty proces współpracy"],note:"Koncepcja wizualna. Ceny i zakres usług wymagają potwierdzenia."},
- ru:{badge:"Тестовая версия нового дизайна",back:"Текущий сайт",headline:"Бухгалтерия, которая освобождает время для бизнеса.",intro:"Сопровождение JDG и sp. z o.o. в Польше. Понятные условия сотрудничества, связь с бухгалтером и помощь с документами.",cta:"Обсудить сотрудничество",more:"Наши услуги",trust:"Что вы получаете?",points:["Сопровождение JDG и sp. z o.o.","Общение на польском, русском и английском","Прозрачный процесс сотрудничества"],note:"Это дизайн-концепция. Цены и условия услуг требуют подтверждения."},
- en:{badge:"New design preview",back:"Current website",headline:"Accounting that gives you more time for business.",intro:"Accounting support for JDG and limited companies in Poland. Clear terms, access to an accountant and help with everyday paperwork.",cta:"Discuss your needs",more:"Explore services",trust:"What you get",points:["JDG and sp. z o.o. support","Polish, Russian and English communication","Transparent onboarding"],note:"Visual concept only. Prices and service scope require confirmation."}
+ pl:{badge:"Wersja testowa nowego designu",back:"Obecna strona",headline:"Księgowość, która daje Ci więcej czasu na biznes.",intro:"Obsługa JDG i sp. z o.o. w Polsce. Jasne zasady współpracy, wsparcie księgowej i pomoc w codziennych formalnościach.",cta:"Zapytaj o współpracę",more:"Zobacz usługi",trust:"Co zyskujesz?",points:["Obsługa JDG i sp. z o.o.","Kontakt po polsku, rosyjsku i angielsku","Przejrzysty proces współpracy"],note:"Koncepcja wizualna. Ceny i zakres usług wymagają potwierdzenia.",nav:["Usługi","Cennik","Kalkulator","Kontakt"],client:"Strefa klienta",calculatorV2:"Sprawdź kalkulator JDG 2026 (wersja testowa)"},
+ ru:{badge:"Тестовая версия нового дизайна",back:"Текущий сайт",headline:"Бухгалтерия, которая освобождает время для бизнеса.",intro:"Сопровождение JDG и sp. z o.o. в Польше. Понятные условия сотрудничества, связь с бухгалтером и помощь с документами.",cta:"Обсудить сотрудничество",more:"Наши услуги",trust:"Что вы получаете?",points:["Сопровождение JDG и sp. z o.o.","Общение на польском, русском и английском","Прозрачный процесс сотрудничества"],note:"Это дизайн-концепция. Цены и условия услуг требуют подтверждения.",nav:["Услуги","Цены","Калькулятор","Контакты"],client:"Кабинет клиента",calculatorV2:"Открыть калькулятор JDG 2026 (тестовая версия)"},
+ en:{badge:"New design preview",back:"Current website",headline:"Accounting that gives you more time for business.",intro:"Accounting support for JDG and limited companies in Poland. Clear terms, access to an accountant and help with everyday paperwork.",cta:"Discuss your needs",more:"Explore services",trust:"What you get",points:["JDG and sp. z o.o. support","Polish, Russian and English communication","Transparent onboarding"],note:"Visual concept only. Prices and service scope require confirmation.",nav:["Services","Pricing","Calculator","Contact"],client:"Client area",calculatorV2:"Open JDG 2026 calculator (preview)"}
 } as const;
 export default function DesignPreview(){
  const {lang,setLang}=useI18n();const t=copy[lang];
@@ -23,8 +23,8 @@ export default function DesignPreview(){
   <header className="sticky top-0 z-40 bg-[#FAF9F6]/95 backdrop-blur border-b border-[#E5E1D9]">
    <div className="max-w-7xl mx-auto px-5 md:px-10 py-4 flex flex-wrap justify-between items-center gap-4">
     <a href="#top"><img src="/finbiz-logo.svg" alt="FINBIZ CENTRUM" className="w-[180px]"/></a>
-    <nav aria-label="Navigation" className="flex flex-wrap gap-4 text-sm font-semibold"><a href="#services">Services</a><a href="#pricing">Pricing</a><a href="#calculator">Calculator</a><a href="#contact">Contact</a></nav>
-    <div className="flex gap-1">{(["pl","ru","en"] as const).map(l=><button type="button" key={l} aria-pressed={lang===l} onClick={()=>setLang(l)} className={`px-2 py-1 rounded text-xs font-bold ${lang===l?"bg-primary text-primary-foreground":"border border-border"}`}>{l.toUpperCase()}</button>)}</div>
+    <nav aria-label="Navigation" className="flex flex-wrap gap-4 text-sm font-semibold"><a href="#services">{t.nav[0]}</a><a href="#pricing">{t.nav[1]}</a><a href="#calculator">{t.nav[2]}</a><a href="#contact">{t.nav[3]}</a></nav>
+    <div className="flex flex-wrap items-center gap-2"><a href="https://panel.finbizcentrum.pl/" target="_blank" rel="noopener noreferrer" className="text-sm font-semibold text-primary underline underline-offset-4">{t.client}</a>{(["pl","ru","en"] as const).map(l=><button type="button" key={l} aria-pressed={lang===l} onClick={()=>setLang(l)} className={`px-2 py-1 rounded text-xs font-bold ${lang===l?"bg-primary text-primary-foreground":"border border-border"}`}>{l.toUpperCase()}</button>)}</div>
    </div>
   </header>
   <main id="top">
@@ -39,7 +39,7 @@ export default function DesignPreview(){
      <ul className="space-y-6">{t.points.map(p=><li key={p} className="flex gap-3 items-start"><CheckCircle2 className="text-primary shrink-0 mt-0.5"/><span className="font-medium">{p}</span></li>)}</ul>
     </aside>
    </div></section>
-   <Services/><Pricing/><TaxCalculator/><Process/><About/><Founder/><FAQ/><Contact/><PartnerServices/>
+   <Services/><Pricing/><div id="calculator"><TaxCalculator/><div className="text-center px-5 pb-8"><a href="/calculator-preview" className="inline-flex items-center gap-2 text-primary font-semibold underline underline-offset-4">{t.calculatorV2}<ArrowRight size={16}/></a></div></div><Process/><About/><Founder/><FAQ/><Contact/><PartnerServices/>
   </main>
   <div className="bg-[#F3F0E9] text-center text-sm px-5 py-5">{t.note}</div><Footer/>
  </div>;
