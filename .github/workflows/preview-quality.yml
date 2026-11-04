@@ -1,0 +1,31 @@
+name: Preview quality checks
+on:
+  pull_request:
+    paths:
+      - "src/**"
+      - "api/**"
+      - "package.json"
+      - "package-lock.json"
+      - ".github/workflows/preview-quality.yml"
+  push:
+    branches:
+      - feature/spec-kit-tax-configurator
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+      # Temporary until package-lock.json is regenerated from package.json.
+      - run: npm install --no-package-lock --no-audit --no-fund
+      - name: TypeScript
+        run: npx tsc --noEmit
+      - name: Unit tests
+        run: npm test
+      - name: Production build
+        run: npm run build
