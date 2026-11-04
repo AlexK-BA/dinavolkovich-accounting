@@ -13,7 +13,7 @@ export default function PreviewContactForm() {
   const form=e.currentTarget;const d=new FormData(form);
   const payload={name:String(d.get("name")||""),phone:String(d.get("phone")||""),email:String(d.get("email")||""),type:String(d.get("type")||""),message:String(d.get("message")||""),website:String(d.get("website")||""),privacyAccepted:d.get("privacy")==="on"};
   setBusy(true);setStatus("idle");
-  try { const r=await fetch("/api/contact",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});if(!r.ok)throw new Error("delivery failed");setStatus("success");form.reset(); }
+  try { const r=await fetch("/api/contact",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});if(!r.ok)throw new Error("delivery failed");const result:unknown=await r.json();if(!result||typeof result!=="object"||!("ok" in result)||result.ok!==true)throw new Error("invalid delivery acknowledgement");setStatus("success");form.reset(); }
   catch {setStatus("error");}finally {setBusy(false);}
  }
  const input="block w-full rounded-md border border-border bg-background px-4 py-3 text-foreground";
