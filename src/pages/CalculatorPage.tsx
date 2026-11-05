@@ -40,7 +40,7 @@ export default function CalculatorPage() {
           <h2 className="text-2xl font-bold mb-4">{labels.company}</h2>
           <p className="text-muted-foreground max-w-3xl mb-7">{labels.companyText}</p>
           <Link to="/?service=sp-z-oo#contact" className="inline-block rounded-md bg-primary px-6 py-3 text-primary-foreground font-semibold">{labels.quote}</Link>
-        </section> : <TaxCalculatorV2 key={type} initialRevenue={type === "jdg-vat" ? 20000 : 12000} initialRate={0.12} />}
+        </section> : <TaxCalculatorV2 key={type} initialRevenue={type === "jdg-vat" ? 20000 : 12000} initialRate={0.12} hideBusinessType />}
       </div>
     </main>
     <Footer />
