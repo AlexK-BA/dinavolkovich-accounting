@@ -1,20 +1,21 @@
 import { motion } from "framer-motion";
 import { Check } from "lucide-react";
 import { useI18n } from "@/lib/i18n";
+import { Link } from "react-router-dom";
 
 const Pricing = () => {
   const { t } = useI18n();
   const plans = [
     {
-      name: t("pricing.p1.name"), price: `${t("pricing.from")} 300`, currency: "zł",
+      slug: "jdg", name: t("pricing.p1.name"), price: `${t("pricing.from")} 300`, currency: "zł",
       features: [t("pricing.p1.f1"), t("pricing.p1.f2"), t("pricing.p1.f3"), t("pricing.p1.f4")],
     },
     {
-      name: t("pricing.p2.name"), price: `${t("pricing.from")} 500`, currency: "zł", popular: true,
+      slug: "jdg-vat", name: t("pricing.p2.name"), price: `${t("pricing.from")} 500`, currency: "zł", popular: true,
       features: [t("pricing.p2.f1"), t("pricing.p2.f2"), t("pricing.p2.f3"), t("pricing.p2.f4")],
     },
     {
-      name: t("pricing.p3.name"), price: `${t("pricing.from")} 1 200`, currency: "zł",
+      slug: "sp-z-oo", name: t("pricing.p3.name"), price: `${t("pricing.from")} 1 200`, currency: "zł",
       features: [t("pricing.p3.f1"), t("pricing.p3.f2"), t("pricing.p3.f3"), t("pricing.p3.f4")],
     },
   ];
@@ -49,11 +50,11 @@ const Pricing = () => {
                   </li>
                 ))}
               </ul>
-              <a href="#contact" className={`block text-center py-3 rounded-md text-sm font-semibold transition-colors ${
+              <Link to={`/uslugi/${p.slug}`} className={`block text-center py-3 rounded-md text-sm font-semibold transition-colors ${
                 p.popular ? "bg-primary-foreground text-primary hover:bg-primary-foreground/90" : "bg-primary text-primary-foreground hover:bg-primary/90"
               }`}>
                 {t("pricing.cta")}
-              </a>
+              </Link>
             </motion.div>
           ))}
         </div>

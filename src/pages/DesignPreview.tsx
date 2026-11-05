@@ -2,7 +2,7 @@ import {ArrowRight,ShieldCheck,CheckCircle2} from "lucide-react";
 import {useI18n} from "@/lib/i18n";
 import Services from "@/components/Services";
 import Pricing from "@/components/Pricing";
-import TaxCalculator from "@/components/TaxCalculator";
+import TaxCalculatorV2 from "@/components/TaxCalculatorV2";
 import Process from "@/components/Process";
 import About from "@/components/About";
 import Founder from "@/components/Founder";
@@ -19,7 +19,7 @@ const copy={
 export default function DesignPreview(){
  const {lang,setLang}=useI18n();const t=copy[lang];
  return <div className="min-h-screen bg-background text-foreground">
-  <div className="bg-[#173D30] text-white px-5 py-2.5 text-sm"><div className="max-w-7xl mx-auto flex justify-between gap-3"><span>{t.badge}</span><a href="/" className="underline underline-offset-4">{t.back}</a></div></div>
+
   <header className="sticky top-0 z-40 bg-[#FAF9F6]/95 backdrop-blur border-b border-[#E5E1D9]">
    <div className="max-w-7xl mx-auto px-5 md:px-10 py-4 flex flex-wrap justify-between items-center gap-4">
     <a href="#top"><img src="/finbiz-logo.svg" alt="FINBIZ CENTRUM" className="w-[180px]"/></a>
@@ -39,8 +39,8 @@ export default function DesignPreview(){
      <ul className="space-y-6">{t.points.map(p=><li key={p} className="flex gap-3 items-start"><CheckCircle2 className="text-primary shrink-0 mt-0.5"/><span className="font-medium">{p}</span></li>)}</ul>
     </aside>
    </div></section>
-   <Services/><Pricing/><TaxCalculator/><Process/><About/><Founder/><FAQ/><Contact/><PartnerServices/>
+   <Services/><Pricing/><TaxCalculatorV2/><Process/><About/><Founder/><FAQ/><Contact/><PartnerServices/>
   </main>
-  <div className="bg-[#F3F0E9] text-center text-sm px-5 py-5">{t.note}</div><Footer/>
+  <Footer/>
  </div>;
 }
