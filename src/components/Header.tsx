@@ -15,17 +15,17 @@ const Header = () => {
   ];
 
   const navLinks = [
-    { label: t("nav.services"), href: "#services" },
-    { label: t("nav.pricing"), href: "#pricing" },
-    { label: t("nav.about"), href: "#about" },
-    { label: t("nav.contact"), href: "#contact" },
+    { label: t("nav.services"), href: "/#services" },
+    { label: t("nav.pricing"), href: "/#pricing" },
+    { label: t("nav.about"), href: "/#about" },
+    { label: t("nav.contact"), href: "/#contact" },
   ];
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-background/90 backdrop-blur-md border-b border-border">
       <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
-        <a href="#" className="flex items-center gap-3">
-          <img src={logo} alt="FinBiz Centrum" className="block h-auto w-[168px] sm:w-[190px] lg:w-[210px] max-w-full object-contain" />
+        <a href="/" className="flex items-center gap-3 shrink-0">
+          <img src={logo} alt="FinBiz Centrum" className="block w-[150px] sm:w-[175px] lg:w-[190px] max-h-[56px] object-contain" />
         </a>
         <nav className="hidden md:flex items-center gap-5 lg:gap-7">
           {navLinks.map((l) => (
@@ -57,7 +57,7 @@ const Header = () => {
             ))}
           </div>
           <a
-            href="#contact"
+            href="/#contact"
             className="bg-primary text-primary-foreground px-5 py-2.5 rounded-md text-sm font-semibold hover:bg-primary/90 transition-colors"
           >
             {t("nav.cta")}
