@@ -17,12 +17,12 @@ const pdfText = {
 const zusLabels = {pl:{start:"Ulga na start",preferential:"Preferencyjny ZUS",full:"Pełny ZUS"},ru:{start:"Ulga na start",preferential:"Льготный ZUS",full:"Полный ZUS"},en:{start:"Start-up relief",preferential:"Preferential ZUS",full:"Full ZUS"}} as const;
 const regimeOrder = ["skala","liniowy","ryczalt"] as const;
 
-export default function TaxCalculator(){
+export default function TaxCalculator({initialRevenue=12000,initialRate=0.12}:{initialRevenue?:number;initialRate?:number}={}){
  const {lang}=useI18n();
  const [detailed,setDetailed]=useState(false);
- const [revenue,setRevenue]=useState(12000);
+ const [revenue,setRevenue]=useState(initialRevenue);
  const [costs,setCosts]=useState(2000);
- const [rate,setRate]=useState(0.12);
+ const [rate,setRate]=useState(initialRate);
  const [zusMode,setZusMode]=useState<ZusMode>("full");
  const [chorobowe,setChorobowe]=useState(true);
  const [months,setMonths]=useState(12);
