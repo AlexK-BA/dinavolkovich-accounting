@@ -17,7 +17,7 @@ const pdfText = {
 const zusLabels = {pl:{start:"Ulga na start",preferential:"Preferencyjny ZUS",full:"Pełny ZUS"},ru:{start:"Ulga na start",preferential:"Льготный ZUS",full:"Полный ZUS"},en:{start:"Start-up relief",preferential:"Preferential ZUS",full:"Full ZUS"}} as const;
 const regimeOrder = ["skala","liniowy","ryczalt"] as const;
 
-export default function TaxCalculator({initialRevenue=12000,initialRate=0.12}:{initialRevenue?:number;initialRate?:number}={}){
+export default function TaxCalculator({initialRevenue=12000,initialRate=0.12,hideBusinessType=false}:{initialRevenue?:number;initialRate?:number;hideBusinessType?:boolean}={}){
  const {lang}=useI18n();
  const [detailed,setDetailed]=useState(false);
  const [businessType,setBusinessType]=useState<"jdg"|"sp-z-oo">("jdg");
@@ -36,12 +36,12 @@ export default function TaxCalculator({initialRevenue=12000,initialRate=0.12}:{i
  const numberField=(label:string,value:number,change:(n:number)=>void,max?:number)=><label className="block text-sm font-semibold">{label}<input className="mt-2 w-full rounded-md border border-border bg-background p-3" type="number" min="0" max={max} value={value} onChange={e=>change(Math.max(0,Number(e.target.value)||0))}/></label>;
  return <section id="calculator" className="section-padding bg-card"><div className="max-w-6xl mx-auto">
   <h2 className="text-3xl md:text-4xl font-bold mb-3">{ui.heading}</h2>
-  <label className="block text-sm font-semibold mb-5">{lang==="pl"?"Forma działalności":lang==="ru"?"Тип бизнеса":"Business type"}
+  {!hideBusinessType && <label className="block text-sm font-semibold mb-5">{lang==="pl"?"Forma działalności":lang==="ru"?"Тип бизнеса":"Business type"}
     <select className="mt-2 block w-full max-w-sm rounded-md border border-border bg-background p-3" value={businessType} onChange={e=>setBusinessType(e.target.value as "jdg"|"sp-z-oo")}>
       <option value="jdg">JDG — jednoosobowa działalność gospodarcza</option>
       <option value="sp-z-oo">Sp. z o.o. — spółka z ograniczoną odpowiedzialnością</option>
     </select>
-  </label>
+  </label>}
   {businessType==="sp-z-oo" ? <div className="rounded-xl border border-border bg-background p-7">
     <h3 className="text-xl font-semibold mb-3">{lang==="pl"?"Kalkulacja dla sp. z o.o.":lang==="ru"?"Расчёт для sp. z o.o.":"Sp. z o.o. estimate"}</h3>
     <p className="text-muted-foreground mb-5">{lang==="pl"?"Spółka z o.o. rozlicza CIT, a wynagrodzenie i dystrybucja zysku wymagają osobnej analizy. Kalkulator PIT dla JDG nie jest tu właściwy.":lang==="ru"?"Для sp. z o.o. применяются CIT и отдельные правила выплаты прибыли и вознаграждений. Калькулятор PIT для JDG здесь неприменим.":"A limited company uses CIT and separate rules for profit distributions and remuneration. The JDG PIT calculator is not applicable."}</p>
