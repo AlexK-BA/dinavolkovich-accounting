@@ -67,3 +67,31 @@
     @apply py-12 md:py-16 px-5 md:px-10 lg:px-16;
   }
 }
+
+
+/* Tax calculator report is only visible in the browser print layout. */
+.tax-print-report { display: none; }
+@media print {
+  @page { size: A4; margin: 14mm; }
+  body * { visibility: hidden !important; }
+  #tax-print-report, #tax-print-report * { visibility: visible !important; }
+  #tax-print-report {
+    display: block !important;
+    position: absolute;
+    inset: 0 auto auto 0;
+    width: 100%;
+    background: white;
+    color: #111;
+    font: 10pt/1.4 Arial, sans-serif;
+  }
+  .tax-print-header { display: flex; align-items: center; gap: 16px; margin-bottom: 16px; }
+  .tax-print-header img { width: 125px; max-height: 65px; object-fit: contain; }
+  .tax-print-header h1 { font-size: 16pt; margin: 0 0 5px; }
+  .tax-print-header p { margin: 0; }
+  .tax-print-date, .tax-print-inputs { margin: 10px 0; }
+  .tax-print-inputs p { margin: 3px 0; }
+  #tax-print-report table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 9pt; }
+  #tax-print-report th, #tax-print-report td { border: 1px solid #bbb; padding: 7px; text-align: right; }
+  #tax-print-report th:first-child { text-align: left; }
+  #tax-print-report footer { margin-top: 20px; font-size: 9pt; }
+}
