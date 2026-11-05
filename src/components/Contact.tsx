@@ -5,6 +5,8 @@ import { useI18n } from "@/lib/i18n";
 
 const Contact = () => {
   const { t } = useI18n();
+  const selectedService = new URLSearchParams(window.location.search).get("service");
+  const serviceName: Record<string,string> = {jdg:"JDG", "jdg-vat":"JDG + VAT", "sp-z-oo":"Sp. z o.o.", "kadry-place":"Kadry i płace", rejestracja:"Rejestracja", konsultacje:"Konsultacje"};
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -51,7 +53,7 @@ const Contact = () => {
                 </div>
                 <div>
                   <label className="text-sm font-medium text-foreground mb-1.5 block">{t("contact.message")}</label>
-                  <textarea name="message" rows={4} className="w-full px-4 py-3 rounded-md border border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 resize-none" placeholder={t("contact.message.ph")} />
+                  <textarea name="message" defaultValue={selectedService && serviceName[selectedService] ? `Zapytanie dotyczące usługi: ${serviceName[selectedService]}` : ""} rows={4} className="w-full px-4 py-3 rounded-md border border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 resize-none" placeholder={t("contact.message.ph")} />
                 </div>
                 <button type="submit" className="w-full bg-primary text-primary-foreground py-3.5 rounded-md text-sm font-semibold hover:bg-primary/90 transition-colors flex items-center justify-center gap-2">
                   <Send className="w-4 h-4" />
