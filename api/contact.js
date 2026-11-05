@@ -18,7 +18,7 @@ export default async function handler(req, res) {
   const body = req.body || {};
   if (body.website) return json(res, 200, { ok: true });
   if (!valid(body.name, 120) || !valid(body.phone, 40) ||
-      (body.email && (typeof body.email !== "string" || body.email.length > 254 || !/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(body.email))) ||
+      (body.email && (typeof body.email !== "string" || body.email.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(body.email))) ||
       !valid(body.type, 100) || typeof body.message !== "string" || body.message.length > 5000 ||
       body.consent !== true || !valid(body.turnstileToken, 4096))
     return json(res, 400, { error: "invalid_submission" });
@@ -46,7 +46,7 @@ export default async function handler(req, res) {
         from: process.env.CONTACT_FROM_EMAIL,
         to: [recipient],
         subject: "FINBIZ CENTRUM — new website enquiry",
-        text: lines.join("\\n"),
+        text: lines.join("\n"),
       }),
       signal: AbortSignal.timeout(10000),
     });
