@@ -67,9 +67,11 @@ const Contact = () => {
       type: String(data.get("type") || ""),
       message: String(data.get("message") || "").trim(),
       consent: data.get("consent") === "on",
-      source: "finbizcentrum.pl",\n      turnstileToken: captchaToken.current,
+      source: "finbizcentrum.pl",
+      turnstileToken: captchaToken.current,
     };
-    if (!payload.name || !payload.phone || !payload.consent) return;\n    if (endpoint && (!siteKey || !payload.turnstileToken)) { setStatus("error"); return; }
+    if (!payload.name || !payload.phone || !payload.consent) return;
+    if (endpoint && (!siteKey || !payload.turnstileToken)) { setStatus("error"); return; }
     if (!endpoint) {
       const subject = encodeURIComponent("Zapytanie FINBIZ CENTRUM — " + payload.type);
       const body = encodeURIComponent(["Imię: " + payload.name, "Telefon: " + payload.phone, "Email: " + payload.email, "Rodzaj: " + payload.type, "", payload.message].join("\\n"));
@@ -85,7 +87,10 @@ const Contact = () => {
       });
       if (!response.ok) throw new Error("Contact endpoint rejected submission");
       setStatus("sent");
-      form.reset();\n      captchaToken.current = "";\n      const turnstile = (window as Window & { turnstile?: { reset: (id: string) => void } }).turnstile;\n      if (captchaWidgetId.current && turnstile) turnstile.reset(captchaWidgetId.current);
+      form.reset();
+      captchaToken.current = "";
+      const turnstile = (window as Window & { turnstile?: { reset: (id: string) => void } }).turnstile;
+      if (captchaWidgetId.current && turnstile) turnstile.reset(captchaWidgetId.current);
     } catch {
       setStatus("error");
     }
@@ -102,7 +107,8 @@ const Contact = () => {
         <div className="grid lg:grid-cols-2 gap-12">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }}>
             {(
-              <form onSubmit={handleSubmit} className="space-y-5">\n                <div className="absolute opacity-0 pointer-events-none" aria-hidden="true"><label>Website<input name="website" type="text" tabIndex={-1} autoComplete="off" /></label></div>
+              <form onSubmit={handleSubmit} className="space-y-5">
+                <div className="absolute opacity-0 pointer-events-none" aria-hidden="true"><label>Website<input name="website" type="text" tabIndex={-1} autoComplete="off" /></label></div>
                 <div className="grid sm:grid-cols-2 gap-5">
                   <div>
                     <label className="text-sm font-medium text-foreground mb-1.5 block">{t("contact.name")}</label>
@@ -134,7 +140,8 @@ const Contact = () => {
                 {!endpoint && <p className="text-sm text-muted-foreground" role="note">{labels.fallback}</p>}
                 {status === "sent" && <p role="status" className="text-sm text-primary">{labels.sent}</p>}
                 {status === "error" && <p role="alert" className="text-sm text-destructive">{labels.error}</p>}
-                {endpoint && siteKey && <div ref={captchaElement} aria-label="Spam protection verification" />}\n                <button type="submit" disabled={status === "sending"} className="w-full bg-primary text-primary-foreground py-3.5 rounded-md text-sm font-semibold hover:bg-primary/90 transition-colors flex items-center justify-center gap-2">
+                {endpoint && siteKey && <div ref={captchaElement} aria-label="Spam protection verification" />}
+                <button type="submit" disabled={status === "sending"} className="w-full bg-primary text-primary-foreground py-3.5 rounded-md text-sm font-semibold hover:bg-primary/90 transition-colors flex items-center justify-center gap-2">
                   <Send className="w-4 h-4" />
                   {t("contact.submit")}
                 </button>
