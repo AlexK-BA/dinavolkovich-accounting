@@ -3,6 +3,8 @@ import { Link, useSearchParams } from "react-router-dom";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import TaxCalculatorV2 from "@/components/TaxCalculatorV2";
+import VatEstimate from "@/components/VatEstimate";
+import CompanyEstimate from "@/components/CompanyEstimate";
 import { useI18n } from "@/lib/i18n";
 
 type BusinessType = "jdg" | "jdg-vat" | "sp-z-oo";
@@ -35,12 +37,10 @@ export default function CalculatorPage() {
             {item === "jdg" ? "JDG" : item === "jdg-vat" ? "JDG + VAT" : "Sp. z o.o."}
           </button>)}
         </div>
-        {type === "jdg-vat" && <p role="note" className="mb-6 rounded-lg border border-border bg-card p-4 text-sm">{labels.vat}</p>}
-        {type === "sp-z-oo" ? <section className="rounded-xl border border-border bg-card p-8 mb-12">
-          <h2 className="text-2xl font-bold mb-4">{labels.company}</h2>
-          <p className="text-muted-foreground max-w-3xl mb-7">{labels.companyText}</p>
-          <Link to="/?service=sp-z-oo#contact" className="inline-block rounded-md bg-primary px-6 py-3 text-primary-foreground font-semibold">{labels.quote}</Link>
-        </section> : <TaxCalculatorV2 key={type} initialRevenue={type === "jdg-vat" ? 20000 : 12000} initialRate={0.12} hideBusinessType />}
+        {type === "sp-z-oo" ? <CompanyEstimate /> : <>
+          <TaxCalculatorV2 key={type} initialRevenue={type === "jdg-vat" ? 20000 : 12000} initialRate={0.12} hideBusinessType />
+          {type === "jdg-vat" && <VatEstimate />}
+        </>}
       </div>
     </main>
     <Footer />
