@@ -71,7 +71,7 @@ export default function TaxCalculator({initialRevenue=12000,initialRate=0.12,hid
    <dl className="text-sm space-y-3">{[[ui.annualRevenue,r.annualRevenue],[ui.annualCosts,r.annualCosts],[ui.social,r.social],[ui.health,r.health],[ui.pit,r.pit],[ui.monthly,r.monthlyNet]].map(([k,v])=><div key={String(k)} className="flex justify-between gap-2"><dt className="text-muted-foreground">{k}</dt><dd className="font-medium text-right">{money(Number(v))}</dd></div>)}</dl>
   </article>)}</div>
   <p className="text-xs text-muted-foreground mt-6">{ui.disclaimer} <a href="mailto:grossbuh23@gmail.com" className="underline">{ui.contact}</a>.</p>
- </div></>}
+ </>}
  {businessType==="jdg" && <div id="tax-print-report" className="tax-print-report">
   <header className="tax-print-header"><img src="/finbiz-logo.svg" alt="FINBIZ CENTRUM"/><div><h1>{pdf.title}</h1><p>{pdf.subtitle}</p></div></header>
   <p className="tax-print-date">{pdf.generated}: {new Intl.DateTimeFormat(lang==="pl"?"pl-PL":lang==="ru"?"ru-RU":"en-GB",{dateStyle:"long"}).format(new Date())}</p>
@@ -89,5 +89,5 @@ export default function TaxCalculator({initialRevenue=12000,initialRate=0.12,hid
   <p className="tax-print-disclaimer">{pdf.disclaimer}</p>
   <footer>FINBIZ CENTRUM · finbizcentrum.pl · {pdf.contact}</footer>
  </div>}
- </section>;
+ </div></section>;
 }
