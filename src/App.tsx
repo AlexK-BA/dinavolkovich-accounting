@@ -9,6 +9,7 @@ import TaxCalculatorV2 from "./components/TaxCalculatorV2";
 import DesignPreview from "./pages/DesignPreview";
 import NotFound from "./pages/NotFound";
 import ServicePage from "./pages/ServicePage";
+import CalculatorPage from "./pages/CalculatorPage";
 
 const queryClient = new QueryClient();
 
@@ -21,6 +22,7 @@ const App = () => (
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Index />} />
+            <Route path="/kalkulator" element={<CalculatorPage />} />
             <Route path="/calculator-preview" element={<div className="min-h-screen bg-background"><div className="bg-primary text-primary-foreground px-5 py-3 text-sm flex flex-wrap justify-between gap-2"><span>FINBIZ CENTRUM · Kalkulator JDG 2026 · Wersja testowa</span><a className="underline" href="/">Powrót na stronę główną / На главную</a></div><TaxCalculatorV2 /></div>} />
             <Route path="/design-preview" element={<DesignPreview />} />
             <Route path="/uslugi/:slug" element={<ServicePage />} />

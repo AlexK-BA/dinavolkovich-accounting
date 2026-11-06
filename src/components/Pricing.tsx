@@ -50,7 +50,7 @@ const Pricing = () => {
                   </li>
                 ))}
               </ul>
-              <Link to={`/uslugi/${p.slug}`} className={`block text-center py-3 rounded-md text-sm font-semibold transition-colors ${
+              <Link to={`/kalkulator?type=${p.slug}`} className={`block text-center py-3 rounded-md text-sm font-semibold transition-colors ${
                 p.popular ? "bg-primary-foreground text-primary hover:bg-primary-foreground/90" : "bg-primary text-primary-foreground hover:bg-primary/90"
               }`}>
                 {t("pricing.cta")}

@@ -17,7 +17,7 @@ const pdfText = {
 const zusLabels = {pl:{start:"Ulga na start",preferential:"Preferencyjny ZUS",full:"Pełny ZUS"},ru:{start:"Ulga na start",preferential:"Льготный ZUS",full:"Полный ZUS"},en:{start:"Start-up relief",preferential:"Preferential ZUS",full:"Full ZUS"}} as const;
 const regimeOrder = ["skala","liniowy","ryczalt"] as const;
 
-export default function TaxCalculator({initialRevenue=12000,initialRate=0.12}:{initialRevenue?:number;initialRate?:number}={}){
+export default function TaxCalculator({initialRevenue=12000,initialRate=0.12,hideBusinessType=false}:{initialRevenue?:number;initialRate?:number;hideBusinessType?:boolean}={}){
  const {lang}=useI18n();
  const [detailed,setDetailed]=useState(false);
  const [businessType,setBusinessType]=useState<"jdg"|"sp-z-oo">("jdg");
@@ -36,12 +36,12 @@ export default function TaxCalculator({initialRevenue=12000,initialRate=0.12}:{i
  const numberField=(label:string,value:number,change:(n:number)=>void,max?:number)=><label className="block text-sm font-semibold">{label}<input className="mt-2 w-full rounded-md border border-border bg-background p-3" type="number" min="0" max={max} value={value} onChange={e=>change(Math.max(0,Number(e.target.value)||0))}/></label>;
  return <section id="calculator" className="section-padding bg-card"><div className="max-w-6xl mx-auto">
   <h2 className="text-3xl md:text-4xl font-bold mb-3">{ui.heading}</h2>
-  <label className="block text-sm font-semibold mb-5">{lang==="pl"?"Forma działalności":lang==="ru"?"Тип бизнеса":"Business type"}
+  {!hideBusinessType && <label className="block text-sm font-semibold mb-5">{lang==="pl"?"Forma działalności":lang==="ru"?"Тип бизнеса":"Business type"}
     <select className="mt-2 block w-full max-w-sm rounded-md border border-border bg-background p-3" value={businessType} onChange={e=>setBusinessType(e.target.value as "jdg"|"sp-z-oo")}>
       <option value="jdg">JDG — jednoosobowa działalność gospodarcza</option>
       <option value="sp-z-oo">Sp. z o.o. — spółka z ograniczoną odpowiedzialnością</option>
     </select>
-  </label>
+  </label>}
   {businessType==="sp-z-oo" ? <div className="rounded-xl border border-border bg-background p-7">
     <h3 className="text-xl font-semibold mb-3">{lang==="pl"?"Kalkulacja dla sp. z o.o.":lang==="ru"?"Расчёт для sp. z o.o.":"Sp. z o.o. estimate"}</h3>
     <p className="text-muted-foreground mb-5">{lang==="pl"?"Spółka z o.o. rozlicza CIT, a wynagrodzenie i dystrybucja zysku wymagają osobnej analizy. Kalkulator PIT dla JDG nie jest tu właściwy.":lang==="ru"?"Для sp. z o.o. применяются CIT и отдельные правила выплаты прибыли и вознаграждений. Калькулятор PIT для JDG здесь неприменим.":"A limited company uses CIT and separate rules for profit distributions and remuneration. The JDG PIT calculator is not applicable."}</p>
@@ -50,7 +50,7 @@ export default function TaxCalculator({initialRevenue=12000,initialRate=0.12}:{i
   <p className="text-muted-foreground mb-5">{ui.intro}</p>
   <div role="note" className="border-2 border-primary/40 rounded-xl p-5 mb-7 bg-background">
    <strong className="block mb-2">{ui.warning}</strong>
-   <p className="text-sm leading-relaxed">{ui.warningBody} <a href="#contact" className="underline text-primary">{ui.contact}</a>.</p>
+   <p className="text-sm leading-relaxed">{ui.warningBody} <a href="/#contact" className="underline text-primary">{ui.contact}</a>.</p>
   </div>
   <div className="flex gap-2 mb-6" role="group" aria-label={ui.heading}>
    <button type="button" aria-pressed={!detailed} onClick={()=>setDetailed(false)} className={`rounded-md px-5 py-2 border ${!detailed?"bg-primary text-primary-foreground":"bg-background"}`}>{ui.simple}</button>
@@ -71,7 +71,7 @@ export default function TaxCalculator({initialRevenue=12000,initialRate=0.12}:{i
    <dl className="text-sm space-y-3">{[[ui.annualRevenue,r.annualRevenue],[ui.annualCosts,r.annualCosts],[ui.social,r.social],[ui.health,r.health],[ui.pit,r.pit],[ui.monthly,r.monthlyNet]].map(([k,v])=><div key={String(k)} className="flex justify-between gap-2"><dt className="text-muted-foreground">{k}</dt><dd className="font-medium text-right">{money(Number(v))}</dd></div>)}</dl>
   </article>)}</div>
   <p className="text-xs text-muted-foreground mt-6">{ui.disclaimer} <a href="mailto:grossbuh23@gmail.com" className="underline">{ui.contact}</a>.</p>
- </div></>}
+ </>}
  {businessType==="jdg" && <div id="tax-print-report" className="tax-print-report">
   <header className="tax-print-header"><img src="/finbiz-logo.svg" alt="FINBIZ CENTRUM"/><div><h1>{pdf.title}</h1><p>{pdf.subtitle}</p></div></header>
   <p className="tax-print-date">{pdf.generated}: {new Intl.DateTimeFormat(lang==="pl"?"pl-PL":lang==="ru"?"ru-RU":"en-GB",{dateStyle:"long"}).format(new Date())}</p>
@@ -89,5 +89,5 @@ export default function TaxCalculator({initialRevenue=12000,initialRate=0.12}:{i
   <p className="tax-print-disclaimer">{pdf.disclaimer}</p>
   <footer>FINBIZ CENTRUM · finbizcentrum.pl · {pdf.contact}</footer>
  </div>}
- </section>;
+ </div></section>;
 }

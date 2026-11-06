@@ -2,7 +2,7 @@ import { Link, useParams } from "react-router-dom";
 import { useI18n } from "@/lib/i18n";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import TaxCalculatorV2 from "@/components/TaxCalculatorV2";
+
 
 type Slug = "jdg" | "jdg-vat" | "sp-z-oo" | "kadry-place" | "rejestracja" | "konsultacje";
 const copy = {
@@ -69,7 +69,11 @@ export default function ServicePage() {
         <p className="text-sm text-muted-foreground mt-5">{t.note}</p>
         <Link to={`/?service=${encodeURIComponent(key)}#contact`} className="inline-block mt-7 rounded-md bg-primary text-primary-foreground px-6 py-4 font-semibold">{t.quote}</Link>
       </div></section>
-      {hasJdgCalculator && <div><div className="max-w-5xl mx-auto px-6 pt-12"><h2 className="text-2xl font-bold">{t.estimate}</h2><p className="text-muted-foreground mt-2">{t.estimateNote}</p></div><TaxCalculatorV2 initialRevenue={key === "jdg-vat" ? 20000 : 12000} initialRate={0.12}/></div>}
+      {hasJdgCalculator && <div className="max-w-5xl mx-auto px-6 py-12">
+        <h2 className="text-2xl font-bold mb-3">{t.estimate}</h2>
+        <p className="text-muted-foreground mb-5">{t.estimateNote}</p>
+        <Link to={`/kalkulator?type=${key}`} className="inline-block rounded-md bg-primary text-primary-foreground px-6 py-3 font-semibold">{t.estimate}</Link>
+      </div>}
     </main>
     <Footer />
   </div>;
