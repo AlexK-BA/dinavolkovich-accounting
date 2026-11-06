@@ -4,7 +4,7 @@ import { Mail, Phone, MapPin, Clock, Send } from "lucide-react";
 import { useI18n } from "@/lib/i18n";
 
 const Contact = () => {
-  const { t } = useI18n();
+  const { t, lang } = useI18n();
   const selectedService = new URLSearchParams(window.location.search).get("service");
   const serviceName: Record<string,string> = {jdg:"JDG", "jdg-vat":"JDG + VAT", "sp-z-oo":"Sp. z o.o.", "kadry-place":"Kadry i płace", rejestracja:"Rejestracja", konsultacje:"Konsultacje"};
 
@@ -28,6 +28,7 @@ const Contact = () => {
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }}>
             {(
               <form onSubmit={handleSubmit} className="space-y-5">
+                <p className="text-sm text-muted-foreground">{lang === "pl" ? "Formularz przygotowuje wiadomość w Twojej aplikacji pocztowej. Aby wysłać zapytanie, zatwierdź wysyłkę w aplikacji e-mail." : lang === "ru" ? "Форма откроет подготовленное письмо в вашей почтовой программе. Для отправки подтвердите отправку в ней." : "This form opens a prepared message in your email app. Confirm sending there to submit your enquiry."}</p>
                 <div className="grid sm:grid-cols-2 gap-5">
                   <div>
                     <label className="text-sm font-medium text-foreground mb-1.5 block">{t("contact.name")}</label>
@@ -57,7 +58,7 @@ const Contact = () => {
                 </div>
                 <button type="submit" className="w-full bg-primary text-primary-foreground py-3.5 rounded-md text-sm font-semibold hover:bg-primary/90 transition-colors flex items-center justify-center gap-2">
                   <Send className="w-4 h-4" />
-                  {t("contact.submit")}
+                  {lang === "pl" ? "Otwórz wiadomość e-mail" : lang === "ru" ? "Открыть письмо для отправки" : "Open email to send"}
                 </button>
               </form>
             )}
