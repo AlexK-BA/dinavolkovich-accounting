@@ -98,7 +98,7 @@ const Header = () => {
           ))}
           <div className="border-t border-border mt-2 pt-2"><p className="text-xs font-semibold text-muted-foreground py-2">{lang === "pl" ? "Strefa klienta" : lang === "ru" ? "Кабинет клиента" : "Client area"}</p>{clientLinks.map(link => <a key={link.href} href={link.href} target="_blank" rel="noopener noreferrer" onClick={() => setOpen(false)} className="flex items-center justify-between py-3 text-sm">{link.label}<ExternalLink size={15}/></a>)}</div>
           <a
-            href="#contact"
+            href="/#contact"
             onClick={() => setOpen(false)}
             className="block mt-2 bg-primary text-primary-foreground px-5 py-2.5 rounded-md text-sm font-semibold text-center"
           >
