@@ -50,7 +50,7 @@ export default function TaxCalculator({initialRevenue=12000,initialRate=0.12,hid
   <p className="text-muted-foreground mb-5">{ui.intro}</p>
   <div role="note" className="border-2 border-primary/40 rounded-xl p-5 mb-7 bg-background">
    <strong className="block mb-2">{ui.warning}</strong>
-   <p className="text-sm leading-relaxed">{ui.warningBody} <a href="#contact" className="underline text-primary">{ui.contact}</a>.</p>
+   <p className="text-sm leading-relaxed">{ui.warningBody} <a href="/#contact" className="underline text-primary">{ui.contact}</a>.</p>
   </div>
   <div className="flex gap-2 mb-6" role="group" aria-label={ui.heading}>
    <button type="button" aria-pressed={!detailed} onClick={()=>setDetailed(false)} className={`rounded-md px-5 py-2 border ${!detailed?"bg-primary text-primary-foreground":"bg-background"}`}>{ui.simple}</button>
