@@ -4,7 +4,7 @@ import { useI18n } from "@/lib/i18n";
 import { Link } from "react-router-dom";
 
 const Pricing = () => {
-  const { t } = useI18n();
+  const { t, lang } = useI18n();
   const plans = [
     {
       slug: "jdg", name: t("pricing.p1.name"), price: `${t("pricing.from")} 300`, currency: "zł",
@@ -31,7 +31,7 @@ const Pricing = () => {
         <div className="grid md:grid-cols-3 gap-6">
           {plans.map((p, i) => (
             <motion.div key={p.name} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1, duration: 0.5 }}
-              className={`relative p-8 rounded-xl border ${p.popular ? "border-accent bg-primary text-primary-foreground" : "border-border bg-card"}`}>
+              className={`relative flex flex-col p-8 rounded-xl border ${p.popular ? "border-accent bg-primary text-primary-foreground" : "border-border bg-card"}`}>
               {p.popular && (
                 <span className="absolute -top-3 left-8 bg-accent text-accent-foreground text-xs font-semibold px-3 py-1 rounded-full">
                   {t("pricing.popular")}
@@ -50,11 +50,14 @@ const Pricing = () => {
                   </li>
                 ))}
               </ul>
-              <Link to={`/kalkulator?type=${p.slug}`} className={`block text-center py-3 rounded-md text-sm font-semibold transition-colors ${
-                p.popular ? "bg-primary-foreground text-primary hover:bg-primary-foreground/90" : "bg-primary text-primary-foreground hover:bg-primary/90"
-              }`}>
-                {t("pricing.cta")}
-              </Link>
+              <div className="mt-auto grid gap-3">
+                <Link to={`/uslugi/${p.slug}`} className={`block text-center py-3 rounded-md border text-sm font-semibold transition-colors ${p.popular ? "border-primary-foreground/70 text-primary-foreground hover:bg-primary-foreground/10" : "border-primary text-primary hover:bg-primary/10"}`}>
+                  {lang === "pl" ? "Dowiedz się więcej" : lang === "ru" ? "Подробнее об услуге" : "Explore service"}
+                </Link>
+                <Link to={`/kalkulator?type=${p.slug}`} className={`block text-center py-3 rounded-md text-sm font-semibold transition-colors ${p.popular ? "bg-primary-foreground text-primary hover:bg-primary-foreground/90" : "bg-primary text-primary-foreground hover:bg-primary/90"}`}>
+                  {lang === "pl" ? "Oblicz podatki" : lang === "ru" ? "Рассчитать налоги" : "Calculate taxes"}
+                </Link>
+              </div>
             </motion.div>
           ))}
         </div>
