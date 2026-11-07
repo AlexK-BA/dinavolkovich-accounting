@@ -2,6 +2,9 @@ import { Link, useParams } from "react-router-dom";
 import { useI18n } from "@/lib/i18n";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import TaxCalculatorV2 from "@/components/TaxCalculatorV2";
+import VatEstimate from "@/components/VatEstimate";
+import CompanyEstimate from "@/components/CompanyEstimate";
 
 
 type Slug = "jdg" | "jdg-vat" | "sp-z-oo" | "kadry-place" | "rejestracja" | "konsultacje";
@@ -54,7 +57,12 @@ export default function ServicePage() {
   if (!slug || !(slug in t.items)) return <div className="min-h-screen"><Header /><main className="max-w-5xl mx-auto px-6 py-24"><h1>404</h1><Link to="/#services">{t.back}</Link></main><Footer /></div>;
   const key = slug as Slug;
   const [title, description, features] = t.items[key];
-  const hasJdgCalculator = key === "jdg" || key === "jdg-vat";
+  const hasCalculator = key === "jdg" || key === "jdg-vat" || key === "sp-z-oo";
+  const example = {
+    pl: {heading:"Przykład zastosowania", label:"Przykładowy scenariusz — dane ilustracyjne", jdg:"Jednoosobowa działalność usługowa: 12 000 zł przychodu i 2 000 zł kosztów miesięcznie. Porównaj formy PIT i ZUS.", vat:"Działalność usługowa VAT: 20 000 zł sprzedaży i 5 000 zł zakupów netto miesięcznie. Porównaj PIT oraz osobno VAT należny i naliczony.", company:"Spółka usługowa: 30 000 zł przychodu i 10 000 zł kosztów miesięcznie. Sprawdź CIT i wariant wypłaty dywidendy."},
+    ru: {heading:"Практический пример", label:"Иллюстративный сценарий, не индивидуальный расчёт", jdg:"ИП в сфере услуг: 12 000 zł выручки и 2 000 zł расходов в месяц. Сравните PIT и ZUS.", vat:"ИП с VAT: 20 000 zł продаж и 5 000 zł покупок без VAT в месяц. Сравните PIT и отдельно входящий и исходящий VAT.", company:"Компания в сфере услуг: 30 000 zł выручки и 10 000 zł расходов в месяц. Оцените CIT и дивиденды."},
+    en: {heading:"Example scenario", label:"Illustrative example, not a personalised estimate", jdg:"Sole trader providing services: PLN 12,000 monthly revenue and PLN 2,000 costs. Compare PIT regimes and ZUS.", vat:"VAT-registered sole trader: PLN 20,000 monthly net sales and PLN 5,000 net purchases. Compare PIT and input/output VAT separately.", company:"Service company: PLN 30,000 monthly revenue and PLN 10,000 costs. Estimate CIT and dividends."}
+  }[lang];
   return <div className="min-h-screen bg-background text-foreground">
     <Header />
     <main>
@@ -69,10 +77,22 @@ export default function ServicePage() {
         <p className="text-sm text-muted-foreground mt-5">{t.note}</p>
         <Link to={`/?service=${encodeURIComponent(key)}#contact`} className="inline-block mt-7 rounded-md bg-primary text-primary-foreground px-6 py-4 font-semibold">{t.quote}</Link>
       </div></section>
-      {hasJdgCalculator && <div className="max-w-5xl mx-auto px-6 py-12">
-        <h2 className="text-2xl font-bold mb-3">{t.estimate}</h2>
-        <p className="text-muted-foreground mb-5">{t.estimateNote}</p>
-        <Link to={`/kalkulator?type=${key}`} className="inline-block rounded-md bg-primary text-primary-foreground px-6 py-3 font-semibold">{t.estimate}</Link>
+      {hasCalculator && <div className="max-w-6xl mx-auto px-5 md:px-10 py-12">
+        <section className="rounded-xl border border-border bg-card p-6 md:p-8 mb-10">
+          <h2 className="text-2xl font-bold mb-3">{example.heading}</h2>
+          <p className="text-sm text-muted-foreground mb-3">{example.label}</p>
+          <p>{key === "jdg" ? example.jdg : key === "jdg-vat" ? example.vat : example.company}</p>
+        </section>
+        <h2 className="text-3xl font-bold mb-3">{t.estimate}</h2>
+        <p className="text-muted-foreground mb-6">{t.estimateNote}</p>
+        {key === "sp-z-oo" ? <CompanyEstimate /> : <>
+          <TaxCalculatorV2 key={key} hideBusinessType initialRevenue={key === "jdg-vat" ? 20000 : 12000} />
+          {key === "jdg-vat" && <VatEstimate />}
+        </>}
+        <div className="rounded-xl border border-border bg-card p-7 mt-8">
+          <p className="text-muted-foreground mb-4">{t.note}</p>
+          <Link to={`/?service=${encodeURIComponent(key)}#contact`} className="inline-block rounded-md bg-primary text-primary-foreground px-6 py-4 font-semibold">{t.quote}</Link>
+        </div>
       </div>}
     </main>
     <Footer />
