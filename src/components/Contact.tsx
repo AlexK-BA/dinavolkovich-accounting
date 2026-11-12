@@ -8,11 +8,14 @@ const Contact = () => {
   const selectedService = new URLSearchParams(window.location.search).get("service");
   const serviceName: Record<string,string> = {jdg:"JDG", "jdg-vat":"JDG + VAT", "sp-z-oo":"Sp. z o.o.", "kadry-place":"Kadry i płace", rejestracja:"Rejestracja", konsultacje:"Konsultacje"};
 
+  const serviceOption = selectedService && serviceName[selectedService] ? selectedService : "";
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const data = new FormData(e.currentTarget);
-    const subject = encodeURIComponent("Zapytanie FINBIZ CENTRUM — " + String(data.get("type") || ""));
-    const body = encodeURIComponent(["Imię: " + String(data.get("name") || ""), "Telefon: " + String(data.get("phone") || ""), "Email: " + String(data.get("email") || ""), "Rodzaj: " + String(data.get("type") || ""), "", String(data.get("message") || "")].join("\n"));
+    const chosenType = String(data.get("type") || "");
+    const subject = encodeURIComponent("Zapytanie FINBIZ CENTRUM — " + (serviceName[chosenType] || chosenType));
+    const body = encodeURIComponent(["Imię: " + String(data.get("name") || ""), "Telefon: " + String(data.get("phone") || ""), "Email: " + String(data.get("email") || ""), "Rodzaj: " + (serviceName[chosenType] || chosenType), "", String(data.get("message") || "")].join("\n"));
     window.location.href = `mailto:grossbuh23@gmail.com?subject=${subject}&body=${body}`;
   };
 
@@ -45,11 +48,12 @@ const Contact = () => {
                 </div>
                 <div>
                   <label className="text-sm font-medium text-foreground mb-1.5 block">{t("contact.type")}</label>
-                  <select name="type" className="w-full px-4 py-3 rounded-md border border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30">
-                    <option>{t("contact.type.jdg")}</option>
-                    <option>{t("contact.type.sp")}</option>
-                    <option>{t("contact.type.plan")}</option>
-                    <option>{t("contact.type.other")}</option>
+                  <select name="type" defaultValue={serviceOption} className="w-full px-4 py-3 rounded-md border border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30">
+                    {serviceOption && <option value={serviceOption}>{serviceName[serviceOption]}</option>}
+                    <option value="jdg">{t("contact.type.jdg")}</option>
+                    <option value="sp-z-oo">{t("contact.type.sp")}</option>
+                    <option value="rejestracja">{t("contact.type.plan")}</option>
+                    <option value="other">{t("contact.type.other")}</option>
                   </select>
                 </div>
                 <div>
