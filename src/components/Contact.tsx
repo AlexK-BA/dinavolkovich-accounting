@@ -49,7 +49,7 @@ const Contact = () => {
                 <div>
                   <label className="text-sm font-medium text-foreground mb-1.5 block">{t("contact.type")}</label>
                   <select name="type" defaultValue={serviceOption} className="w-full px-4 py-3 rounded-md border border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30">
-                    {serviceOption && <option value={serviceOption}>{serviceName[serviceOption]}</option>}
+                    {serviceOption && !["jdg", "sp-z-oo", "rejestracja"].includes(serviceOption) && <option value={serviceOption}>{serviceName[serviceOption]}</option>}
                     <option value="jdg">{t("contact.type.jdg")}</option>
                     <option value="sp-z-oo">{t("contact.type.sp")}</option>
                     <option value="rejestracja">{t("contact.type.plan")}</option>
